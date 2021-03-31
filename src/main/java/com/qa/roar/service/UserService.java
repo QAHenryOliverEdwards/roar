@@ -27,5 +27,16 @@ public class UserService {
 		return this.mapper.map(userDTO, User.class);
 	}
 	
+	// CREATE
+	public UserDTO create(User user) {
+		return this.mapToDTO(this.repo.save(user));
+	}
 	
+	// READ - all
+	
+	// READ - one
+	
+	// UPDATE
+	
+	// DELETE
 }
