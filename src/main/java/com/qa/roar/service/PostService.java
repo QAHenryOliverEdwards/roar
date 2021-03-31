@@ -46,6 +46,11 @@ public class PostService {
 	}
 	
 	// READ - by id
+	public PostDTO read(Long id) {
+		return this.mapToDTO(
+				this.repo.findById(id)
+				.orElseThrow());
+	}
 	
 	// UPDATE
 	
