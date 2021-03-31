@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.qa.roar.persistence.domain.Post;
 import com.qa.roar.persistence.repository.PostRepo;
 import com.qa.roar.rest.dto.PostDTO;
+import com.qa.roar.utils.BeanUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -53,6 +54,12 @@ public class PostService {
 	}
 	
 	// UPDATE
+	public PostDTO update(Post post, Long id) {
+		Post updateMe = this.repo.findById(id).orElseThrow();
+		BeanUtils.mergeNotNull(post, updateMe);
+		return this.mapToDTO(
+				this.repo.save(updateMe));
+	}
 	
 	// DELETE
 }
