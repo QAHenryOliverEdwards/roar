@@ -52,6 +52,13 @@ public class UserService {
 				.orElseThrow());
 	}
 	
+	// READ - by username
+	public  UserDTO read(String username) {
+		return this.mapToDTO(
+				this.repo.findByUsername(username)
+				.orElseThrow());
+	}
+	
 	// UPDATE
 	
 	// DELETE
