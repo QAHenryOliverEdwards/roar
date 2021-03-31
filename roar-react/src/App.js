@@ -1,4 +1,4 @@
-import {UserPost} from "./posts/UserPost";
+import {UserPost} from "./main page components/UserPost";
 
 function App() {
   return (
