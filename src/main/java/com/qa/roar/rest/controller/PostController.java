@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,18 @@ public class PostController {
 	
 	@GetMapping("/read/{id}")
 	public ResponseEntity<PostDTO> read(@PathVariable Long id) {
-		return ResponseEntity.ok(this.service.read(id)); // alternate OK because why not?
+		return new ResponseEntity<>(
+				this.service.read(id),
+				HttpStatus.OK);
+	}
+	
+	// UPDATE
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<PostDTO> update(@RequestBody Post post, @PathVariable Long id) {
+		return new ResponseEntity<>(
+				this.service.update(post, id),
+				HttpStatus.ACCEPTED);
 	}
 	
 }
