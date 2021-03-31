@@ -26,9 +26,11 @@ public class UserService {
 	}
 	
 	// map from DTO
-	private User mapFromDTO(UserDTO userDTO) {
-		return this.mapper.map(userDTO, User.class);
-	}
+	// this will be used after the SonarQube
+	// Static Analysis re-factor
+//	private User mapFromDTO(UserDTO userDTO) {
+//		return this.mapper.map(userDTO, User.class);
+//	}
 	
 	// CREATE
 	public UserDTO create(User user) {
@@ -43,7 +45,12 @@ public class UserService {
 				.collect(Collectors.toList());
 	}
 	
-	// READ - one
+	// READ - by id
+	public UserDTO read(Long id) {
+		return this.mapToDTO(
+				this.repo.findById(id)
+				.orElseThrow());
+	}
 	
 	// UPDATE
 	
