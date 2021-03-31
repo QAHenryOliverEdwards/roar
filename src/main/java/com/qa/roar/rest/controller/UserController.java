@@ -1,10 +1,16 @@
 package com.qa.roar.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.qa.roar.persistence.domain.User;
+import com.qa.roar.rest.dto.UserDTO;
 import com.qa.roar.service.UserService;
 
 @RestController
@@ -20,6 +26,19 @@ public class UserController {
 		this.service = service;
 	}
 	
+	// CREATE
 	
+	@PostMapping("/create")
+	public ResponseEntity<UserDTO> create(@RequestBody User user) {
+		return new ResponseEntity<>(
+				this.service.create(user),
+				HttpStatus.CREATED);
+	}
+	
+	// READ
+	
+	// UPDATE
+	
+	// DELETE
 
 }
