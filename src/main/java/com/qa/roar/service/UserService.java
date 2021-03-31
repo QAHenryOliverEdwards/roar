@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.qa.roar.persistence.domain.User;
 import com.qa.roar.persistence.repository.UserRepo;
 import com.qa.roar.rest.dto.UserDTO;
+import com.qa.roar.utils.BeanUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -60,14 +61,11 @@ public class UserService {
 	}
 	
 	// UPDATE
-	//
-	//	NEED TO ADD A MERGE NOT NULL HERE
-	//
 	public UserDTO update(User user, Long id) {
+		User updateMe = this.repo.findById(id).orElseThrow();
+		BeanUtils.mergeNotNull(user, updateMe);
 		return this.mapToDTO(
-				this.repo.save(
-						this.repo.findById(id)
-						.orElseThrow()));
+				this.repo.save(updateMe));
 	}
 	
 	// DELETE
