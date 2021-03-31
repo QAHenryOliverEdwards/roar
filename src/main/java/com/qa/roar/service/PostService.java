@@ -29,4 +29,16 @@ public class PostService {
 //		return this.mapper.map(postDTO, Post.class);
 //	}
 	
+	// CREATE
+	public PostDTO create(Post post) {
+		return this.mapToDTO(this.repo.save(post));
+	}
+	
+	// READ - all
+	
+	// READ - by id
+	
+	// UPDATE
+	
+	// DELETE
 }
