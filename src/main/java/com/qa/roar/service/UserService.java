@@ -60,6 +60,15 @@ public class UserService {
 	}
 	
 	// UPDATE
+	//
+	//	NEED TO ADD A MERGE NOT NULL HERE
+	//
+	public UserDTO update(User user, Long id) {
+		return this.mapToDTO(
+				this.repo.save(
+						this.repo.findById(id)
+						.orElseThrow()));
+	}
 	
 	// DELETE
 }
