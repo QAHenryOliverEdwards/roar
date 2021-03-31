@@ -1,5 +1,8 @@
 package com.qa.roar.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,12 @@ public class PostService {
 	}
 	
 	// READ - all
+	public List<PostDTO> read() {
+		return this.repo.findAll()
+				.stream()
+				.map(this::mapToDTO)
+				.collect(Collectors.toList());
+	}
 	
 	// READ - by id
 	
