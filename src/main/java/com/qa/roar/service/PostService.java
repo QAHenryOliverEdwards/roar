@@ -62,4 +62,10 @@ public class PostService {
 	}
 	
 	// DELETE
+	// will return true if deleted
+	public Boolean delete(Long id) {
+		this.repo.deleteById(id);
+		return !this.repo.existsById(id);
+	}
+	
 }
