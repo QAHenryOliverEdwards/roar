@@ -53,6 +53,13 @@ public class UserController {
 		return ResponseEntity.ok(this.service.read(id)); // alternate OK because why not?
 	}
 	
+	@GetMapping("/name/{username}") // might want to change this path later
+	public ResponseEntity<UserDTO> read(@PathVariable String username) {
+		return new ResponseEntity<>(
+				this.service.read(username),
+				HttpStatus.OK);
+	}
+	
 	// UPDATE
 	
 	// DELETE
