@@ -4,21 +4,12 @@ export const UserPost = (props) => {
     // username should be the text username of the person posting
     // postTest should be the text that wants to be rendered in the post
 
-    const {img, username, postText} = props;
+    const {username, postText} = props;
 
     return (
         <div>
-            <div>
-                <div style={{display: 'inline-block', verticalAlign: 'top'}}>
-                    <img src={img} width={100} height={100}/>
-                </div>
-                <div style={{display: 'inline-block'}}>
-                    <h3>{username}</h3>
-                </div>
-            </div>
-            <div>
-                {postText}
-            </div>
+            <h3 className={'post-name'}>{username}</h3>
+            <p className={'post-text'}>{postText}</p>
         </div>
     )
 }
