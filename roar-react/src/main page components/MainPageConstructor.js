@@ -1,11 +1,13 @@
 import {UserPost} from "./UserPost";
 import {useEffect, useState} from "react";
 import {PostTable} from "./PostTable";
+import {Topbar} from "./Topbar/Topbar";
 
 export const MainPageConstructor =()=>{
 
     const [posts, setPosts] = useState([]);
-    const [names, setNames] = useState([])
+    const [names, setNames] = useState([]);
+    const [searchText, setSearchText] = useState(``);
 
     const getPosts = async()=>{
         const allPosts = await getAllPosts();
@@ -17,15 +19,24 @@ export const MainPageConstructor =()=>{
         setNames([allNames]);
     }
 
+    const searchEvent =(event)=>{
+        console.log(event.target.type);
+        if (event.target.type === `search`) {
+            setSearchText(event.target.value);
+        }
+
+    }
+
     useEffect(()=>{
         setTimeout(()=>{
-            getPosts()
+            getPosts();
             getNames();
         }, 5000)
     })
 
     return(
         <div>
+            <Topbar searchText={searchText} searchEvent={searchEvent}/>
             <PostTable name={names} post={posts}/>
         </div>
     )

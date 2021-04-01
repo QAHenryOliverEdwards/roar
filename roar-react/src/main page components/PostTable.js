@@ -5,7 +5,6 @@ export const PostTable =(props) => {
     const makePostList =()=>{
         let allPosts = [];
         for (let i in name) {
-            console.log(post[i][0]['body']);
             allPosts.push(<UserPost username={name[i]} postText={post[i][0]['body']}/>)
         }
 
