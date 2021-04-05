@@ -3,6 +3,9 @@ import {useEffect, useState} from "react";
 import UserPostTable from "./coponents/UserPostTable";
 import './css/bootstrap.css';
 import userSearchFunc from "./functions/userSearchFunc";
+import './css/roar.css'
+import './css/fonts.css';
+import Title from "./coponents/Title";
 
 const App = () => {
 
@@ -32,8 +35,9 @@ const App = () => {
     }, [])
 
     return (
-        <div className={'container-fluid'}>
+        <div className={'container-fluid mt-3'}>
             <div>
+                <Title/>
                 <Topbar userInputFunc={handleInputText} searchFunc={constructSearch}/>
                 <UserPostTable users={usersToDisplay}/>
             </div>
