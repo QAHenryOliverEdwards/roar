@@ -8,9 +8,7 @@ const PostsTable = (props) => {
     const elementArray = [];
 
     const makePostElement = () => {
-
-        console.log(postDictionary);
-
+        
         const getPost = (ID) => {
             for (let post in postDictionary) {
                 if (postDictionary[post].postID === ID) {
