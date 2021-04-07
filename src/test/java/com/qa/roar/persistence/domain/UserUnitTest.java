@@ -1,5 +1,14 @@
 package com.qa.roar.persistence.domain;
 
-public class UserUnitTest {
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
+public class UserUnitTest {
+	
+	private Long id = 3L;
+	private String username = "root";
+	private String name = "test name";
+	private String email = "root@test.com";
+	private String password = "root";
+	
 }
