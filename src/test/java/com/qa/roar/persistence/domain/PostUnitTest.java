@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +15,6 @@ public class PostUnitTest {
 	private Boolean visibility = true;
 	private User user = new User("test", "test", "test");
 	private Post parent = null;
-	private List<Post> children = null;
 	
 	private Post createPost = new Post(body, user);
 	private Post createReply = new Post(body, user, parent);
@@ -53,7 +50,11 @@ public class PostUnitTest {
 	
 	@Test
 	void updateReplyConstructorTest() throws Exception {
-		
+		Post expected = updateReply;
+		Post result = new Post(id, body, visibility, user, parent);
+		assertNotNull(result);
+		assertTrue(result instanceof Post);
+		assertEquals(expected, result);
 	}
 	
 }
