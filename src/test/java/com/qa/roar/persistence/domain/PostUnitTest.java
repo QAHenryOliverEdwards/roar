@@ -1,5 +1,9 @@
 package com.qa.roar.persistence.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +26,11 @@ public class PostUnitTest {
 	
 	@Test
 	void createPostConstructorTest() throws Exception {
-		
+		Post expected = createPost;
+		Post result = new Post(body, user);
+		assertNotNull(result);
+		assertTrue(result instanceof Post);
+		assertEquals(expected, result);
 	}
 	
 	@Test
