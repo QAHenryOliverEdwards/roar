@@ -44,7 +44,11 @@ public class PostUnitTest {
 	
 	@Test
 	void updatePostConstructorTest() throws Exception {
-		
+		Post expected = updatePost;
+		Post result = new Post(id, body, visibility, user);
+		assertNotNull(result);
+		assertTrue(result instanceof Post);
+		assertEquals(expected, result);
 	}
 	
 	@Test
