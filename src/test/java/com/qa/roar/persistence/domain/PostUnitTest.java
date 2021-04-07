@@ -14,6 +14,9 @@ public class PostUnitTest {
 	private Post parent = null;
 	private List<Post> children = null;
 	
-	
+	private Post createPost = new Post(body, user);
+	private Post createReply = new Post(body, user, parent);
+	private Post updatePost = new Post(id, body, visibility, user);
+	private Post updateReply = new Post(id, body, visibility, user, parent);
 	
 }
