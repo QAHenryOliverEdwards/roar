@@ -2,6 +2,7 @@ package com.qa.roar.persistence.domain;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -18,5 +19,25 @@ public class PostUnitTest {
 	private Post createReply = new Post(body, user, parent);
 	private Post updatePost = new Post(id, body, visibility, user);
 	private Post updateReply = new Post(id, body, visibility, user, parent);
+	
+	@Test
+	void createPostConstructorTest() throws Exception {
+		
+	}
+	
+	@Test
+	void createReplyConstructorTest() throws Exception {
+		
+	}
+	
+	@Test
+	void updatePostConstructorTest() throws Exception {
+		
+	}
+	
+	@Test
+	void updateReplyConstructorTest() throws Exception {
+		
+	}
 	
 }
