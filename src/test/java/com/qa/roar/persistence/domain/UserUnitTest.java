@@ -1,5 +1,10 @@
 package com.qa.roar.persistence.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -15,5 +20,13 @@ public class UserUnitTest {
 	private User updateUser = new User(id, username, email, password);
 	
 	
+	@Test
+	void createUserConstructorTest() throws Exception {
+		User expected = createUser;
+		User result = new User(username, email, password);
+		assertNotNull(result);
+		assertTrue(result instanceof User);
+		assertEquals(expected, result);
+	}
 	
 }
