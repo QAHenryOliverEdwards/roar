@@ -103,4 +103,11 @@ public class UserController {
 		AuthUtils.deleteUserToken(token);
 		return new ResponseEntity<>("TOKEN HAS BEEN DELETED", HttpStatus.OK);
 	}
+
+	// GET ID FROM AUTH-KEY
+	@GetMapping("/getID")
+	public ResponseEntity<Long> getID(@RequestHeader("token") String token) {
+		Long userID = AuthUtils.getToken(token);
+		return new ResponseEntity<>(userID, HttpStatus.OK);
+	}
 }
