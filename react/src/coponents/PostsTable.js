@@ -65,7 +65,7 @@ const PostsTable = (props) => {
                 constructChildren(post.childrenID, initialParentID);
                 initialParentID += 1;
             }
-            postDictionary.splice(index, 1);
+            // postDictionary.splice(index, 1);
         })
 
         return elementArray;
