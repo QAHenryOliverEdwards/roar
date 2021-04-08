@@ -4,6 +4,7 @@ import Searchbar from "../coponents/Searchbar";
 import constructPostDictionary from "../functions/constructPostDictionary";
 import PostsTable from "../coponents/PostsTable";
 import LogoutButton from "../coponents/LogoutButton";
+import MakePost from "../coponents/MakePost";
 
 const Homepage = (props) => {
 
@@ -12,6 +13,7 @@ const Homepage = (props) => {
     const [allUsers, setAllUsers] = useState([]);
     const [postDictionary, setPostDictionary] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [postText, setPostText] = useState('');
 
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
@@ -35,8 +37,42 @@ const Homepage = (props) => {
         await constructAllPosts();
     }, [constructAllPosts, getAllUsers]);
 
+    const submitPost = useCallback(async ()=>{
+        let auth = sessionStorage.getItem('auth-roar');
+        let response = await fetch(`http://127.0.0.1:8082/users/getID`, {
+            headers: {
+                'token': auth
+            }
+        })
+        let userID = await response.text();
+        let postObj = {
+            'body': postText,
+            'visibility': true,
+            'user': {
+                'id': userID
+            }
+        }
+        let postResponse = await fetch('http://127.0.0.1:8082/posts/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postObj)
+        })
+
+        if (postResponse.status === 201) {
+            console.log('Post successful')
+        } else {
+            console.log('Post unsuccessful')
+        }
+    }, [postText])
+
     const handleInputText = (event) => {
         setSearchText(event.target.value);
+    }
+
+    const handlePostText =(event)=>{
+        setPostText(event.target.value);
     }
 
     const constructSearch = () => {
@@ -46,13 +82,14 @@ const Homepage = (props) => {
 
     useEffect(() => {
         constructPage();
-    }, [constructPage, searchText])
+    }, [constructPage, searchText, postText])
 
     return (
         <div className={'container-fluid mt-3 col-lg-6 col-sm-12'}>
             <div className={'row'}>
                 <Title/>
                 <LogoutButton setLogoutFunc={setLogoutFunc}/>
+                <MakePost setPostText={handlePostText} submitPostFunc={submitPost}/>
             </div>
             <div className={'row'}>
                 <Searchbar userInputFunc={handleInputText} searchFunc={constructSearch}/>
