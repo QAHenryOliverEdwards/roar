@@ -29,4 +29,13 @@ public class UserUnitTest {
 		assertEquals(expected, result);
 	}
 	
+	@Test
+	void updateUserConstructorTest() throws Exception {
+		User expected = updateUser;
+		User result = new User(id, username, email, password);
+		assertNotNull(result);
+		assertTrue(result instanceof User);
+		assertEquals(expected, result);
+	}
+	
 }
