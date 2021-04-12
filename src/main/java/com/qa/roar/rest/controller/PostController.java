@@ -69,7 +69,7 @@ public class PostController {
 	// DELETE
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<PostDTO> update( @PathVariable Long id) {
+	public ResponseEntity<PostDTO> delete( @PathVariable Long id) {
 		return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

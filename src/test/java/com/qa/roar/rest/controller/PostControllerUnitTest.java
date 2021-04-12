@@ -110,4 +110,19 @@ public class PostControllerUnitTest {
 		verify(this.service, atLeastOnce()).update(testPost, id);
 	}
 	
+	@Test
+	public void deletePostTest() {
+		
+		Long id = 6L;
+		
+		when(this.service.delete(id)).thenReturn(true);
+		
+		ResponseEntity <PostDTO> expected = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		ResponseEntity <PostDTO> result = this.controller.delete(id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).update(testPost, id);
+	}
 }
