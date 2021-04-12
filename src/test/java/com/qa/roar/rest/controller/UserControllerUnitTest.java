@@ -73,4 +73,22 @@ public class UserControllerUnitTest {
 		
 	}
 	
+	@Test
+	public void readByIdUserTest() {
+
+		Long id = 5L;
+		UserDTO testUserRead = this.mapToDTO(testUser);
+
+		when(this.service.read(id)).thenReturn(testUserRead);
+		
+		ResponseEntity <UserDTO> expected = ResponseEntity.ok(testUserRead);
+		ResponseEntity <UserDTO> result = this.controller.read(id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).read(id);
+		
+	}
+	
 }
