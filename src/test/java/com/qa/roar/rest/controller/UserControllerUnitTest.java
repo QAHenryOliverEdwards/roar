@@ -109,4 +109,22 @@ public class UserControllerUnitTest {
 		
 	}
 	
+	@Test
+	public void updateUserTest() {
+		
+		Long id = 5L;
+		UserDTO testUserUpdate = this.mapToDTO(testUser);
+		
+		when(this.service.update(testUser, id)).thenReturn(testUserUpdate);
+		
+		ResponseEntity <UserDTO> expected = new ResponseEntity<UserDTO>(testUserUpdate, HttpStatus.ACCEPTED);
+		ResponseEntity <UserDTO> result = this.controller.update(testUser, id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).update(testUser, id);
+		
+	}
+	
 }
