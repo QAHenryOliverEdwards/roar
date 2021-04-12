@@ -92,4 +92,22 @@ public class PostControllerUnitTest {
 		
 		verify(this.service, atLeastOnce()).read(id);
 	}
+	
+	@Test
+	public void updatePostTest() {
+		
+		Long id = 6L;
+		PostDTO testPostUpdate = this.mapToDTO(testPost);
+		
+		when(this.service.update(testPost, id)).thenReturn(testPostUpdate);
+		
+		ResponseEntity <PostDTO> expected = new ResponseEntity<PostDTO>(testPostUpdate, HttpStatus.ACCEPTED);
+		ResponseEntity <PostDTO> result = this.controller.update(testPost, id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).update(testPost, id);
+	}
+	
 }
