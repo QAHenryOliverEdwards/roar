@@ -127,4 +127,21 @@ public class UserControllerUnitTest {
 		
 	}
 	
+	@Test
+	public void deleteUserTest() {
+		
+		Long id = 5L;
+		
+		when(this.service.delete(id)).thenReturn(true);
+		
+		ResponseEntity <UserDTO> expected = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		ResponseEntity <UserDTO> result = this.controller.delete(id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).delete(id);
+		
+	}
+	
 }
