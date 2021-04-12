@@ -161,4 +161,6 @@ public class UserControllerUnitTest {
 		
 	}
 	
+	// NEED TO ADD LOGIN AND LOGOUT TESTS IN HERE WHEN AUTH UTILS IS ADDED
+	
 }
