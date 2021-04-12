@@ -8,9 +8,7 @@ const PostsTable = (props) => {
     const elementArray = [];
 
     const makePostElement = () => {
-
-        console.log(postDictionary);
-
+        
         const getPost = (ID) => {
             for (let post in postDictionary) {
                 if (postDictionary[post].postID === ID) {
@@ -67,7 +65,7 @@ const PostsTable = (props) => {
                 constructChildren(post.childrenID, initialParentID);
                 initialParentID += 1;
             }
-            postDictionary.splice(index, 1);
+            // postDictionary.splice(index, 1);
         })
 
         return elementArray;
