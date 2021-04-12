@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.qa.roar.persistence.domain.User;
+import com.qa.roar.rest.dto.UserDTO;
 import com.qa.roar.service.UserService;
 
 @SpringBootTest
@@ -25,5 +26,9 @@ public class UserControllerUnitTest {
 	private final User testUser = new User(5L, "root", "root@test.com", "root");
 	
 	private final List<User> testListUser = List.of(testUser);
+	
+	private UserDTO mapToDTO(User user) {
+		return this.mapper.map(user, UserDTO.class);
+	}
 	
 }
