@@ -144,4 +144,21 @@ public class UserControllerUnitTest {
 		
 	}
 	
+	@Test
+	public void deletePostTestFail() {
+		
+		Long id = 5L;
+		
+		when(this.service.delete(id)).thenReturn(false);
+		
+		ResponseEntity <UserDTO> expected = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		ResponseEntity <UserDTO> result = this.controller.delete(id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).delete(id);
+		
+	}
+	
 }
