@@ -75,4 +75,21 @@ public class PostControllerUnitTest {
 		
 		verify(this.service, atLeastOnce()).read();
 	}
+	
+	@Test
+	public void readByIdPostTest() {
+		
+		Long id = 6L;
+		PostDTO testPostRead = this.mapToDTO(testPost);
+		
+		when(this.service.read(id)).thenReturn(testPostRead);
+		
+		ResponseEntity <PostDTO> expected = ResponseEntity.ok(testPostRead);
+		ResponseEntity <PostDTO> result = this.controller.read(id);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).read(id);
+	}
 }
