@@ -1,9 +1,15 @@
 package com.qa.roar.rest.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +36,8 @@ public class PostControllerUnitTest {
 	
 	private final Post testPost = new Post(6L, "test post body", true, new User("test", "test", "test"));
 	
+	private final List<Post> testListPost = List.of(testPost);	
+	
 	private PostDTO mapToDTO(Post post) {
 		return this.mapper.map(post, PostDTO.class);
 	}
@@ -37,10 +45,34 @@ public class PostControllerUnitTest {
 	@Test
 	public void createPostTest() {
 		
-		Mockito.when(this.service.create(testPost)).thenReturn(this.mapToDTO(testPost));
+		when(this.service.create(testPost)).thenReturn(this.mapToDTO(testPost));
 		
-		assertThat(new ResponseEntity<PostDTO>(this.mapToDTO(testPost), HttpStatus.CREATED))
-			.isEqualTo(this.controller.create(testPost));
+		ResponseEntity <PostDTO> expected = new ResponseEntity<PostDTO>(this.mapToDTO(testPost), HttpStatus.CREATED);
+		ResponseEntity <PostDTO> result = this.controller.create(testPost);
 		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).create(testPost);
+		
+//		assertThat(new ResponseEntity<PostDTO>(this.mapToDTO(testPost), HttpStatus.CREATED))
+//			.isEqualTo(this.controller.create(testPost));
+		
+	}
+	
+	@Test
+	public void readAllPostTest() {
+		
+		List<PostDTO> testListRead = testListPost.stream().map(this::mapToDTO).collect(Collectors.toList());
+		
+		when(this.service.read()).thenReturn(testListRead);
+		
+		ResponseEntity <List<PostDTO>> expected = ResponseEntity.ok(testListRead);
+		ResponseEntity <List<PostDTO>> result = this.controller.read();
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).read();
 	}
 }
