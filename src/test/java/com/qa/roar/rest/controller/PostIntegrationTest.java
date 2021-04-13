@@ -1,17 +1,27 @@
 package com.qa.roar.rest.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.roar.persistence.domain.Post;
+import com.qa.roar.persistence.domain.User;
 import com.qa.roar.rest.dto.PostDTO;
+import com.qa.roar.rest.dto.UserDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,5 +43,25 @@ public class PostIntegrationTest {
 	
 	private String URI="/posts";
 	
+	//Prepopulated records
+	private final User testUser1=new User(1L,"testUser1", "Test name 1","test1@email.com","testPass1");
+	private final PostDTO testPost1=this.mapToDTO(new Post(1L,"Test Post 1",true,testUser1));
+	private final PostDTO testPost2=this.mapToDTO(new Post(2L,"Test Post 2",true,testUser1));
+	
+	@Test
+	public void testCreate() throws Exception{
+		PostDTO toCreateDto=this.mapToDTO(new Post("New post",testUser1));
+		PostDTO expectedDto=toCreateDto;
+		expectedDto.setId(3L);
+		String toCreateAsJson=this.jsonify.writeValueAsString(toCreateDto);
+		String expectedAsJson=this.jsonify.writeValueAsString(expectedDto);
+		
+		
+		RequestBuilder req=post(URI+"/create").contentType(MediaType.APPLICATION_JSON).content(toCreateAsJson);
+		ResultMatcher checkStatus=status().isCreated();
+		ResultMatcher checkBody=content().json(expectedAsJson);
+		
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
 	
 }
