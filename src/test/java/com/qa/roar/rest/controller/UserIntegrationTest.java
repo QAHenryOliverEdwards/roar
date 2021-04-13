@@ -76,4 +76,24 @@ public class UserIntegrationTest {
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 	
+	@Test
+	public void testReadById() throws Exception{
+		Long id=1L;
+		String testUser1AsJson=this.jsonify.writeValueAsString(testUser1);
+		
+		RequestBuilder req=get(URI+"read/"+id.toString());
+		ResultMatcher checkStatus=status().isOk();
+		ResultMatcher checkBody=content().json(testUser1AsJson);
+
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
+	
+	@Test
+	public void testLogin() throws Exception{}
+	@Test
+	public void testLogout() throws Exception{}
+	@Test
+	public void testUpdate() throws Exception{}
+	@Test
+	public void testDelete() throws Exception{}
 }
