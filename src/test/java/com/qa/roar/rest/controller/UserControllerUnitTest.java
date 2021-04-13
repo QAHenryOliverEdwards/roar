@@ -172,15 +172,30 @@ public class UserControllerUnitTest {
 		Long id = 5L;
 		String authToken = AuthUtils.createUserToken(id);
 		
-		when(this.service.login(
-				testUser.getUsername(), 
-				testUser.getPassword()))
-		.thenReturn(id);
+		when(this.service.login(username, password)).thenReturn(id);
 		
 		ResponseEntity <String> expected = new ResponseEntity<>(authToken, HttpStatus.OK);
 		ResponseEntity <String> result = this.controller.login(username, password);
 		
 		assertNotNull(expected);
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).login(username, password);
+		
+	}
+	
+	@Test
+	public void loginUserTestFail() {
+		
+		String username = "root";
+		String password = "root";
+		
+		when(this.service.login(username, password)).thenReturn(null);
+		
+		ResponseEntity <String> expected = new ResponseEntity<>("INVALID", HttpStatus.BAD_REQUEST);
+		ResponseEntity <String> result = this.controller.login(username, password);
+		
 		assertNotNull(result);
 		assertEquals(expected, result);
 		
