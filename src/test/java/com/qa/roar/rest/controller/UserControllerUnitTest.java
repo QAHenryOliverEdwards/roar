@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import com.qa.roar.persistence.domain.User;
 import com.qa.roar.rest.dto.UserDTO;
 import com.qa.roar.service.UserService;
+import com.qa.roar.utils.AuthUtils;
 
 @SpringBootTest
 public class UserControllerUnitTest {
@@ -145,7 +146,7 @@ public class UserControllerUnitTest {
 	}
 	
 	@Test
-	public void deletePostTestFail() {
+	public void deleteUserTestFail() {
 		
 		Long id = 5L;
 		
@@ -162,5 +163,29 @@ public class UserControllerUnitTest {
 	}
 	
 	// NEED TO ADD LOGIN AND LOGOUT TESTS IN HERE WHEN AUTH UTILS IS ADDED
+	
+	@Test
+	public void loginUserTest() {
+		
+		String username = "root";
+		String password = "root";
+		Long id = 5L;
+		String authToken = AuthUtils.createUserToken(id);
+		
+		when(this.service.login(
+				testUser.getUsername(), 
+				testUser.getPassword()))
+		.thenReturn(id);
+		
+		ResponseEntity <String> expected = new ResponseEntity<>(authToken, HttpStatus.OK);
+		ResponseEntity <String> result = this.controller.login(username, password);
+		
+		assertNotNull(expected);
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(this.service, atLeastOnce()).login(username, password);
+		
+	}
 	
 }
