@@ -3,6 +3,7 @@ package com.qa.roar.rest.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -200,6 +201,25 @@ public class UserControllerUnitTest {
 		assertEquals(expected, result);
 		
 		verify(this.service, atLeastOnce()).login(username, password);
+		
+	}
+	
+	@Test
+	public void logoutUserTest() {
+		
+		String authToken = AuthUtils.createUserToken(testUser.getId());
+		
+		UserController mockController = mock(UserController.class);
+		
+		mockController.logout(authToken);
+		
+		ResponseEntity <String> expected = new ResponseEntity<>("TOKEN HAS BEEN DELETED", HttpStatus.OK);
+		ResponseEntity <String> result = this.controller.logout(authToken);
+		
+		assertNotNull(result);
+		assertEquals(expected, result);
+		
+		verify(mockController, atLeastOnce()).logout(authToken);
 		
 	}
 	
