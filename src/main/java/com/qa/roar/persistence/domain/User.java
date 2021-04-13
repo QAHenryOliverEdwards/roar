@@ -48,7 +48,7 @@ public class User {
 	private List<Post> posts;
 	
 	// account creation constructor
-	public User(String username, String email, String password) {
+	public User(String username,String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -58,6 +58,25 @@ public class User {
 	public User(Long id, String username, String email, String password) {
 		this.id = id;
 		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User(Long id, @NotNull @Size(max = 24) String username, @NotNull @Size(max = 36) String name,
+			@NotNull @Size(max = 36) String email, @NotNull @Size(max = 36) String password) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User(@NotNull @Size(max = 24) String username, @NotNull @Size(max = 36) String name,
+			@NotNull @Size(max = 36) String email, @NotNull @Size(max = 36) String password) {
+		super();
+		this.username = username;
+		this.name = name;
 		this.email = email;
 		this.password = password;
 	}

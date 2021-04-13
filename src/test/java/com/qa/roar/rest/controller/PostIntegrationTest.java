@@ -17,7 +17,7 @@ import com.qa.roar.rest.dto.PostDTO;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Sql(
-		scripts={"classpath:roar-data.sql","classpath:roar-schema.sql"},
+		scripts={"classpath:roar-schema.sql","classpath:roar-data.sql"},
 		executionPhase=ExecutionPhase.BEFORE_TEST_METHOD
 		)
 public class PostIntegrationTest {
@@ -30,4 +30,8 @@ public class PostIntegrationTest {
 	private PostDTO mapToDTO(Post post) {
 		return this.mapper.map(post,PostDTO.class);
 	}
+	
+	private String URI="/posts";
+	
+	
 }
