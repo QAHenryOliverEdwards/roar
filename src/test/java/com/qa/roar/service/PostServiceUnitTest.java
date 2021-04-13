@@ -27,14 +27,15 @@ public class PostServiceUnitTest {
 	@MockBean
 	private PostRepo repo;
 	
+	@Autowired
 	private ModelMapper mapper;
 	
 	private PostDTO mapToDTO(Post post) {
 		return this.mapper.map(post, PostDTO.class);
 	}
 	
-	private final Post testPost1 = new Post(1L, "test post body", true, new User("test", "test", "test"));
-	private final Post testPost2 = new Post(2L, "test post body 2", true, new User("test", "test", "test"));
+	private final Post testPost1 = new Post(1L, "test post body", true, new User(1L, " ", " ", " "));
+	private final Post testPost2 = new Post(2L, "test post body 2", true, new User(1L, " ", " ", " "));
 	
 	private final List<Post> testPostList = List.of(testPost1, testPost2);
 	
