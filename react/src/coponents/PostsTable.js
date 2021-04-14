@@ -221,7 +221,15 @@ const PostsTable = (props) => {
                 if (currentChild.pID === parentID) {
                     let match = getPost(currentChild.cID);
                     match.level = currentChild.level;
-                    newElementArray.push(<Reply post={match} key={currentChild.cID}/>);
+                    let selfEditObj = {};
+                    selfEdit.forEach((editObj) => {
+                        if (match.postID === editObj.postID) {
+                            selfEditObj = editObj;
+                        }
+                    })
+                    newElementArray.push(<Reply post={match} key={currentChild.cID}
+                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                    setSelfEditBoxText={changeSpecificSelfReply} submitEditFunc={submitEdit}/>);
                     postsToIgnore.push(currentChild.cID);
                 }
             }
