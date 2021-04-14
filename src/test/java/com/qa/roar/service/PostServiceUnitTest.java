@@ -110,5 +110,39 @@ public class PostServiceUnitTest {
 		verify(this.repo, atLeastOnce()).save(testPost2);
 		
 	}
+	
+	@Test
+	void deletePostTest() {
+		
+		Long id = 1L;
+		
+		Boolean expected = true;
+		
+		when(this.repo.existsById(id)).thenReturn(false);
+		
+		Boolean result = this.service.delete(id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsById(id);
+		
+	}
+	
+	@Test
+	void deletePostFailTest() {
+		
+		Long id = 999L;
+		
+		Boolean expected = false;
+		
+		when(this.repo.existsById(id)).thenReturn(true);
+		
+		Boolean result = this.service.delete(id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsById(id);
+		
+	}
 
 }
