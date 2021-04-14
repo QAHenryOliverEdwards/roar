@@ -2,6 +2,7 @@ package com.qa.roar.rest.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,4 +87,15 @@ public class PostIntegrationTest {
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 	
+	
+	@Test
+	public void testUpdate() throws Exception{
+		Post toUpdate=new Post("TestPost 1 Updated",testUser1);
+		PostDTO toUpdateDto=this.mapToDTO(toUpdate);
+		String toUpdateAsJson=this.jsonify.writeValueAsString(toUpdateDto);
+		RequestBuilder req=put(URI+"/update/1").contentType(MediaType.APPLICATION_JSON).content(toUpdateAsJson);
+		ResultMatcher checkStatus=status().isOk();
+		ResultMatcher checkBody=content().json(toUpdateAsJson);
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
 }
