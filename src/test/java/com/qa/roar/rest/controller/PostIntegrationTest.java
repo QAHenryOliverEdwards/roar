@@ -56,6 +56,7 @@ public class PostIntegrationTest {
 	@Test
 	public void testCreate() throws Exception{
 		PostDTO toCreateDto=this.mapToDTO(new Post("New post",testUser1));
+		toCreateDto.setVisibility(true);
 		PostDTO expectedDto=toCreateDto;
 		expectedDto.setId(3L);
 		String toCreateAsJson=this.jsonify.writeValueAsString(toCreateDto);
@@ -72,6 +73,7 @@ public class PostIntegrationTest {
 	@Test
 	public void testReadAll() throws Exception{
 		String testPostsAsJson=this.jsonify.writeValueAsString(testPosts);
+		testPostsAsJson=setChildrenToEmptyArray(testPostsAsJson);
 		RequestBuilder req=get(URI+"/read");
 		ResultMatcher checkStatus=status().isOk();
 		ResultMatcher checkBody=content().json(testPostsAsJson);
@@ -81,6 +83,7 @@ public class PostIntegrationTest {
 	@Test
 	public void testReadById() throws Exception{
 		String testPost1AsJson=this.jsonify.writeValueAsString(testPost1);
+		testPost1AsJson=setChildrenToEmptyArray(testPost1AsJson);
 		RequestBuilder req=get(URI+"/read/1");
 		ResultMatcher checkStatus=status().isOk();
 		ResultMatcher checkBody=content().json(testPost1AsJson);
@@ -91,11 +94,16 @@ public class PostIntegrationTest {
 	@Test
 	public void testUpdate() throws Exception{
 		Post toUpdate=new Post("TestPost 1 Updated",testUser1);
+		toUpdate.setId(1L);
 		PostDTO toUpdateDto=this.mapToDTO(toUpdate);
 		String toUpdateAsJson=this.jsonify.writeValueAsString(toUpdateDto);
+		PostDTO expectedDto=testPost1;
+		expectedDto.setBody(toUpdateDto.getBody());
+		String expectedAsJson=this.jsonify.writeValueAsString(expectedDto);
+		expectedAsJson=setChildrenToEmptyArray(expectedAsJson);
 		RequestBuilder req=put(URI+"/update/1").contentType(MediaType.APPLICATION_JSON).content(toUpdateAsJson);
 		ResultMatcher checkStatus=status().isAccepted();
-		ResultMatcher checkBody=content().json(toUpdateAsJson);
+		ResultMatcher checkBody=content().json(expectedAsJson);
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 	
@@ -105,5 +113,9 @@ public class PostIntegrationTest {
 		ResultMatcher checkStatus=status().isNoContent();
 		ResultMatcher checkBody=content().string("");
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
+	
+	public String setChildrenToEmptyArray(String jsonString) {
+		return jsonString.replace("\"children\":null", "\"children\":[]");
 	}
 }
