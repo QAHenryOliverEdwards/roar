@@ -1,5 +1,6 @@
 package com.qa.roar.rest.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.roar.persistence.domain.Post;
 import com.qa.roar.persistence.domain.User;
 import com.qa.roar.rest.dto.PostDTO;
-import com.qa.roar.rest.dto.UserDTO;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -94,8 +94,16 @@ public class PostIntegrationTest {
 		PostDTO toUpdateDto=this.mapToDTO(toUpdate);
 		String toUpdateAsJson=this.jsonify.writeValueAsString(toUpdateDto);
 		RequestBuilder req=put(URI+"/update/1").contentType(MediaType.APPLICATION_JSON).content(toUpdateAsJson);
-		ResultMatcher checkStatus=status().isOk();
+		ResultMatcher checkStatus=status().isAccepted();
 		ResultMatcher checkBody=content().json(toUpdateAsJson);
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
+	
+	@Test
+	public void testDelete() throws Exception{
+		RequestBuilder req=delete(URI+"/delete/1");
+		ResultMatcher checkStatus=status().isNoContent();
+		ResultMatcher checkBody=content().string("");
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 }
