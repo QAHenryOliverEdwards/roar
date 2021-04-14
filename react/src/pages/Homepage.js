@@ -5,6 +5,7 @@ import constructPostDictionary from "../functions/constructPostDictionary";
 import PostsTable from "../coponents/PostsTable";
 import LogoutButton from "../coponents/LogoutButton";
 import MakePost from "../coponents/MakePost";
+import getUserID from "../functions/getUserID";
 
 const Homepage = (props) => {
 
@@ -14,6 +15,8 @@ const Homepage = (props) => {
     const [postDictionary, setPostDictionary] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [postText, setPostText] = useState('');
+
+    const [reply, setReply] = useState({});
 
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
@@ -39,12 +42,7 @@ const Homepage = (props) => {
 
     const submitPost = useCallback(async ()=>{
         let auth = sessionStorage.getItem('auth-roar');
-        let response = await fetch(`http://127.0.0.1:8082/users/getID`, {
-            headers: {
-                'token': auth
-            }
-        })
-        let userID = await response.text();
+        let userID = await getUserID(auth);
         let postObj = {
             'body': postText,
             'visibility': true,
@@ -77,7 +75,6 @@ const Homepage = (props) => {
 
     const constructSearch = () => {
         console.log('feature coming soon');
-        // constructAllPosts();
     }
 
     useEffect(() => {
