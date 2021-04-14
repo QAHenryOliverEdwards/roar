@@ -89,5 +89,26 @@ public class PostServiceUnitTest {
 		verify(this.repo, atLeastOnce()).findById(id);
 		
 	}
+	
+	@Test
+	void updatePostTest() {
+		
+		Long id = 2L;
+		
+		PostDTO expected = this.mapToDTO(testPost2);
+		
+		when(this.repo.findById(id)).thenReturn(Optional.of(testPost2));
+		
+		when(this.repo.save(testPost2)).thenReturn(testPost2);
+		
+		PostDTO result = this.service.update(testPost2, id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findById(id);
+		
+		verify(this.repo, atLeastOnce()).save(testPost2);
+		
+	}
 
 }
