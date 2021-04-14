@@ -77,4 +77,13 @@ public class PostIntegrationTest {
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 	
+	@Test
+	public void testReadById() throws Exception{
+		String testPost1AsJson=this.jsonify.writeValueAsString(testPost1);
+		RequestBuilder req=get(URI+"/read/1");
+		ResultMatcher checkStatus=status().isOk();
+		ResultMatcher checkBody=content().json(testPost1AsJson);
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
+	
 }
