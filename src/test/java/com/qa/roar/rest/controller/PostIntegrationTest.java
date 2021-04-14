@@ -1,8 +1,11 @@
 package com.qa.roar.rest.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -47,6 +50,7 @@ public class PostIntegrationTest {
 	private final User testUser1=new User(1L,"testUser1", "Test name 1","test1@email.com","testPass1");
 	private final PostDTO testPost1=this.mapToDTO(new Post(1L,"Test Post 1",true,testUser1));
 	private final PostDTO testPost2=this.mapToDTO(new Post(2L,"Test Post 2",true,testUser1));
+	private final List<PostDTO> testPosts=List.of(testPost1,testPost2);
 	
 	@Test
 	public void testCreate() throws Exception{
@@ -61,6 +65,15 @@ public class PostIntegrationTest {
 		ResultMatcher checkStatus=status().isCreated();
 		ResultMatcher checkBody=content().json(expectedAsJson);
 		
+		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+	}
+	
+	@Test
+	public void testReadAll() throws Exception{
+		String testPostsAsJson=this.jsonify.writeValueAsString(testPosts);
+		RequestBuilder req=get(URI+"/read");
+		ResultMatcher checkStatus=status().isOk();
+		ResultMatcher checkBody=content().json(testPostsAsJson);
 		this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
 	}
 	
