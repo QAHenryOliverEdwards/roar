@@ -12,12 +12,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.qa.roar.persistence.domain.User;
 import com.qa.roar.persistence.repository.UserRepo;
 import com.qa.roar.rest.dto.UserDTO;
 
+@SpringBootTest
 public class UserServiceUnitTest {
 	
 	@Autowired
@@ -156,6 +158,42 @@ public class UserServiceUnitTest {
 		assertEquals(expected, result);
 		
 		verify(this.repo, atLeastOnce()).existsById(id);
+		
+	}
+	
+	@Test
+	void loginUserTest() {
+		
+		String username = testUser2.getUsername();
+		String password = testUser2.getPassword();
+		
+		Long expected = testUser2.getId();
+		
+		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
+		
+		Long result = this.service.login(username, password);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findByUsername(username);
+		
+	}
+	
+	@Test
+	void loginUserFailTest() {
+		
+		String username = testUser2.getUsername();
+		String password = "wrong password";
+		
+		Long expected = null;
+		
+		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
+		
+		Long result = this.service.login(username, password);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findByUsername(username);
 		
 	}
 	
