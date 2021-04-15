@@ -242,18 +242,30 @@ const PostsTable = (props) => {
                             selfEditObj = editObj;
                         }
                     })
+                    let replyPropObj = {};
+                    replyBox.forEach((replyProp) => {
+                        if (match.postID === replyProp.postID) {
+                            replyPropObj = replyProp;
+                        }
+                    })
                     if (currentChild.uID == userID) {
                         newElementArray.push(<Reply post={match} key={currentChild.cID}
                                                     selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
                                                     setSelfEditBoxText={changeSpecificSelfReply}
                                                     submitEditFunc={submitEdit} deleteFunc={deletePost}
-                                                    editButtons={true}/>);
+                                                    editButtons={true} replyBoxProps={replyPropObj}
+                                                    replyBoxFunc={changeReplyBox}
+                                                    setReplyBoxText={changeSpecificReplyBox}
+                                                    submitReplyFunc={submitReply}/>);
                     } else {
                         newElementArray.push(<Reply post={match} key={currentChild.cID}
                                                     selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
                                                     setSelfEditBoxText={changeSpecificSelfReply}
                                                     submitEditFunc={submitEdit} deleteFunc={deletePost}
-                                                    editButtons={false}/>);
+                                                    editButtons={false} replyBoxProps={replyPropObj}
+                                                    replyBoxFunc={changeReplyBox}
+                                                    setReplyBoxText={changeSpecificReplyBox}
+                                                    submitReplyFunc={submitReply}/>);
                     }
 
                     postsToIgnore.push(currentChild.cID);

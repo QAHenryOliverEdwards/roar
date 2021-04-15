@@ -5,10 +5,11 @@ const Reply = (props) => {
     const {
         post, selfEditBoxProps, editBoxFunc,
         setSelfEditBoxText, submitEditFunc,
-        deleteFunc, editButtons
+        deleteFunc, editButtons, replyBoxProps,
+        replyBoxFunc, setReplyBoxText, submitReplyFunc
     } = props;
 
-    if (selfEditBoxProps.isEditBox === false && editButtons === true) {
+    if (selfEditBoxProps.isEditBox === false && editButtons === true && replyBoxProps.isBox === false) {
         return (
             <div>
                 <Card className={'light-green-bg'}>
@@ -29,11 +30,14 @@ const Reply = (props) => {
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{post.body}</Card.Text>
+                    <Button variant={'link'} onClick={() => {
+                        replyBoxFunc(replyBoxProps.postID)
+                    }} className={'button-as-link px-0'}>Reply</Button>
                     <Card.Text className={'post-text'}>At reply level {post.level}</Card.Text>
                 </Card>
             </div>
         )
-    } else if (selfEditBoxProps.isEditBox === false && editButtons === false) {
+    } else if (selfEditBoxProps.isEditBox === false && editButtons === false && replyBoxProps.isBox === false) {
         return (
             <div>
                 <Card className={'light-green-bg'}>
@@ -43,12 +47,14 @@ const Reply = (props) => {
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{post.body}</Card.Text>
+                    <Button variant={'link'} onClick={() => {
+                        replyBoxProps(replyBoxProps.postID)
+                    }} className={'button-as-link px-0'}>Reply</Button>
                     <Card.Text className={'post-text'}>At reply level {post.level}</Card.Text>
                 </Card>
             </div>
         )
-    }
-    else if (selfEditBoxProps.isEditBox === true) {
+    } else if (selfEditBoxProps.isEditBox === true && replyBoxProps.isBox === false) {
         return (
             <div>
                 <Card className={'light-green-bg'}>
@@ -61,6 +67,22 @@ const Reply = (props) => {
                     }}>
                         Finish Edit!
                     </Button>
+                </Card>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <Card className={'light-green-bg'}>
+                    <Card.Title className={'post-name'}>{post.name}</Card.Title>
+                    <Card.Text className={'post-text'}>{post.body}</Card.Text>
+                    <textarea className={'form-control'} rows={2} onChange={(event)=>{
+                        setReplyBoxText(replyBoxProps.postID, event)
+                    }}/>
+                    <Button variant={'primary'} onClick={() => {
+                        submitReplyFunc(replyBoxProps.postID)
+                    }}
+                    >Submit Reply</Button>
                 </Card>
             </div>
         )
