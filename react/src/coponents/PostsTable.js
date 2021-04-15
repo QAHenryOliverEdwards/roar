@@ -10,10 +10,83 @@ const PostsTable = (props) => {
     const [elementArray, setElementArray] = useState([]);
     const [replyBox, setReplyBox] = useState([]);
     const [currentPostDictionary, setCurrentPostDictionary] = useState([]);
+    const [selfEdit, setSelfEdit] = useState([]);
 
     const pushPostDictionaryChanges = useCallback(() => {
         setCurrentPostDictionary(postDictionary)
     }, [postDictionary])
+
+    const changeSelfReplyBox = useCallback((selfReplyToChange) => {
+        const toApply = [];
+        if (!selfReplyToChange) {
+            for (let post in postDictionary) {
+                let currentPost = postDictionary[post];
+                let thisReply = {
+                    'postID': currentPost.postID,
+                    'isEditBox': false
+                }
+                toApply.push(thisReply);
+            }
+            setSelfEdit(toApply);
+        } else if (selfReplyToChange) {
+            for (let post in postDictionary) {
+                let currentPost = postDictionary[post];
+                if (selfReplyToChange !== currentPost.postID) {
+                    let thisReply = {
+                        'postID': currentPost.postID,
+                        'isEditBox': false
+                    }
+                    toApply.push(thisReply);
+                } else if (selfReplyToChange === currentPost.postID) {
+                    let thisReply = {
+                        'postID': currentPost.postID,
+                        'isEditBox': true,
+                        'boxText': ''
+                    }
+                    toApply.push(thisReply);
+                }
+            }
+            setSelfEdit(toApply)
+        }
+    }, [postDictionary])
+
+    const changeSpecificSelfReply = useCallback((postID, event) => {
+        for (let edit in selfEdit) {
+            let currentEdit = selfEdit[edit];
+            if (currentEdit.postID === postID) {
+                currentEdit.boxText = event.target.value;
+                console.log(currentEdit.boxText);
+            }
+        }
+    }, [selfEdit])
+
+    const submitEdit = useCallback(async (postID) => {
+        let editObj;
+        let auth = sessionStorage.getItem('auth-roar');
+        let userID = await getUserID(auth);
+        for (let edit in selfEdit) {
+            let currentEdit = selfEdit[edit]
+            if (currentEdit.postID === postID) {
+                editObj = {
+                    'body': currentEdit.boxText,
+                }
+            }
+        }
+
+        let response = await fetch(`http://127.0.0.1:8082/posts/update/${postID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editObj)
+        })
+
+        if (response.status === 202) {
+            console.log('Update successful!')
+        } else {
+            console.log('Update failed!');
+        }
+    }, [selfEdit])
 
     const changeReplyBox = useCallback((replyToChange) => {
         const toApply = [];
@@ -148,7 +221,15 @@ const PostsTable = (props) => {
                 if (currentChild.pID === parentID) {
                     let match = getPost(currentChild.cID);
                     match.level = currentChild.level;
-                    newElementArray.push(<Reply post={match} key={currentChild.cID}/>);
+                    let selfEditObj = {};
+                    selfEdit.forEach((editObj) => {
+                        if (match.postID === editObj.postID) {
+                            selfEditObj = editObj;
+                        }
+                    })
+                    newElementArray.push(<Reply post={match} key={currentChild.cID}
+                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                    setSelfEditBoxText={changeSpecificSelfReply} submitEditFunc={submitEdit}/>);
                     postsToIgnore.push(currentChild.cID);
                 }
             }
@@ -184,9 +265,18 @@ const PostsTable = (props) => {
                             replyPropObj = replyProp;
                         }
                     })
+                    let selfEditObj = {};
+                    selfEdit.forEach((editObj) => {
+                        if (fp.postID === editObj.postID) {
+                            selfEditObj = editObj;
+                        }
+                    })
                     newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
                                                replyBoxFunc={changeReplyBox} setReplyBoxText={changeSpecificReplyBox}
-                                               submitReplyFunc={submitReply}/>);
+                                               submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
+                                               editBoxFunc={changeSelfReplyBox}
+                                               setSelfEditBoxText={changeSpecificSelfReply}
+                                               submitEditFunc={submitEdit}/>);
                     let initialParentID = thisPost.postID;
                     while (initialParentID <= maxLevel) {
                         console.log(ignore);
@@ -201,7 +291,8 @@ const PostsTable = (props) => {
 
         setElementArray(newElementArray);
 
-    }, [changeReplyBox, changeSpecificReplyBox, postDictionary, replyBox, submitReply])
+    }, [changeReplyBox, changeSpecificReplyBox, postDictionary, replyBox, submitReply, changeSelfReplyBox,
+        changeSpecificSelfReply, selfEdit])
 
     useEffect(() => {
         pushPostDictionaryChanges()
@@ -210,6 +301,10 @@ const PostsTable = (props) => {
     useEffect(() => {
         changeReplyBox()
     }, [changeReplyBox])
+
+    useEffect(() => {
+        changeSelfReplyBox()
+    }, [changeSelfReplyBox])
 
     useEffect(() => {
         makePostElement()
