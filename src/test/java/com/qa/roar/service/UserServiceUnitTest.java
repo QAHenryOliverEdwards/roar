@@ -25,8 +25,8 @@ public class UserServiceUnitTest {
 		return this.mapper.map(user, UserDTO.class);
 	}
 	
-	private final User testUser2 = new User();
-	private final User testUser3 = new User();
+	private final User testUser2 = new User(2L,"user2", "user2@test.com", "password");
+	private final User testUser3 = new User(3L,"user3", "user3@test.com", "password");
 	
 	private final List<User> testUserList = List.of(testUser2, testUser3);
 
