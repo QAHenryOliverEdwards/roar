@@ -16,8 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -30,10 +28,6 @@ import com.qa.roar.rest.dto.PostDTO;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Sql(
-		scripts={"classpath:roar-schema.sql","classpath:roar-data.sql"},
-		executionPhase=ExecutionPhase.BEFORE_TEST_METHOD
-		)
 public class PostIntegrationTest {
 	@Autowired
 	private MockMvc mvc;
@@ -48,7 +42,7 @@ public class PostIntegrationTest {
 	private String URI="/posts";
 	
 	//Prepopulated records
-	private final User testUser1=new User(1L,"testUser1", "Test name 1","test1@email.com","testPass1");
+	private final User testUser1=new User(1L,"testUser1", "Test name 1","test1@email.com","testPassword1");
 	private final PostDTO testPost1=this.mapToDTO(new Post(1L,"Test Post 1",true,testUser1));
 	private final PostDTO testPost2=this.mapToDTO(new Post(2L,"Test Post 2",true,testUser1));
 	private final List<PostDTO> testPosts=List.of(testPost1,testPost2);

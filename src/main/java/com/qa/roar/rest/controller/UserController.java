@@ -69,7 +69,7 @@ public class UserController {
 	// UPDATE
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity<UserDTO> update(@RequestBody User user, @PathVariable Long id) {
+	public ResponseEntity<UserDTO> update(@RequestHeader("token") String token, @RequestBody User user, @PathVariable Long id) {
 		return new ResponseEntity<>(
 				this.service.update(user, id),
 				HttpStatus.ACCEPTED);
@@ -78,7 +78,7 @@ public class UserController {
 	// DELETE
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<UserDTO> delete( @PathVariable Long id) {
+	public ResponseEntity<UserDTO> delete(@RequestHeader("token") String token, @PathVariable Long id) {
 		return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
