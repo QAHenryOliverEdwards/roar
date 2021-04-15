@@ -88,6 +88,18 @@ const PostsTable = (props) => {
         }
     }, [selfEdit])
 
+    const deletePost = useCallback(async (postID) => {
+            let response = await fetch(`http://127.0.0.1:8082/posts/delete/${postID}`, {
+                method: 'DELETE',
+            })
+            if (response.status === 204) {
+                console.log('Delete successful')
+            } else {
+                console.log('Delete unsuccessful')
+            }
+        }
+        , [])
+
     const changeReplyBox = useCallback((replyToChange) => {
         const toApply = [];
         if (!replyToChange) {
@@ -228,8 +240,9 @@ const PostsTable = (props) => {
                         }
                     })
                     newElementArray.push(<Reply post={match} key={currentChild.cID}
-                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
-                    setSelfEditBoxText={changeSpecificSelfReply} submitEditFunc={submitEdit}/>);
+                                                selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                                                setSelfEditBoxText={changeSpecificSelfReply}
+                                                submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
                     postsToIgnore.push(currentChild.cID);
                 }
             }
@@ -276,7 +289,7 @@ const PostsTable = (props) => {
                                                submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
                                                editBoxFunc={changeSelfReplyBox}
                                                setSelfEditBoxText={changeSpecificSelfReply}
-                                               submitEditFunc={submitEdit}/>);
+                                               submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
                     let initialParentID = thisPost.postID;
                     while (initialParentID <= maxLevel) {
                         console.log(ignore);

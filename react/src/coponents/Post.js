@@ -5,7 +5,8 @@ const Post = (props) => {
     let {
         post, replyBoxProps, replyBoxFunc,
         setReplyBoxText, submitReplyFunc, selfEditBoxProps,
-        editBoxFunc, setSelfEditBoxText, submitEditFunc
+        editBoxFunc, setSelfEditBoxText, submitEditFunc,
+        deleteFunc
     } = props;
 
     console.log(post)
@@ -28,13 +29,19 @@ const Post = (props) => {
                 <Card className={'dark-green-bg'}>
                     <div className={'container-fluid px-0'}>
                         <div className={'row'}>
-                            <Card.Title className={'post-name col-11'}>{post.name}</Card.Title>
+                            <Card.Title className={'post-name col-10'}>{post.name}</Card.Title>
                             <Button variant={'link'}
                                     className={'col-1 justify-content-end card-title button-no-decoration'}
                                     onClick={() => {
                                         editBoxFunc(selfEditBoxProps.postID)
                                     }}
                             >{'\u270F'}</Button>
+                            <Button variant={'link'}
+                                    className={'col-1 justify-content-end card-title button-no-decoration'}
+                                    onClick={() => {
+                                        deleteFunc(post.postID)
+                                    }}
+                            >{'\u{1F5D1}'}</Button>
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{post.body}</Card.Text>

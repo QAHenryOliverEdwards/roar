@@ -76,14 +76,27 @@ public class UserService {
 	}
 
 	// LOGIN
+	
+//	public Long login(String username, String password) {
+//		List<UserDTO> account = this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+//		for (UserDTO thisUser: account) {
+//			if (thisUser.getUsername().equals(username) && thisUser.getPassword().equals(password)) {
+//				return thisUser.getId();
+//			}
+//		}
+//		return null;
+//	}
+	
 	public Long login(String username, String password) {
-		List<UserDTO> account = this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
-		for (UserDTO thisUser: account) {
-			if (thisUser.getUsername().equals(username) && thisUser.getPassword().equals(password)) {
-				return thisUser.getId();
-			}
+
+		UserDTO user = read(username);
+		
+		if (user.getPassword().equals(password)) {
+			return user.getId();
 		}
+
 		return null;
+
 	}
 	
 }
