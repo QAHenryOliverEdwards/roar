@@ -6,11 +6,8 @@ const Post = (props) => {
         post, replyBoxProps, replyBoxFunc,
         setReplyBoxText, submitReplyFunc, selfEditBoxProps,
         editBoxFunc, setSelfEditBoxText, submitEditFunc,
-        deleteFunc
+        deleteFunc, editButtons
     } = props;
-
-    console.log(post)
-
 
     // return (
     //     <div>
@@ -23,7 +20,7 @@ const Post = (props) => {
     //     </div>
     // )
 
-    if (replyBoxProps.isBox === false && selfEditBoxProps.isEditBox === false) {
+    if (replyBoxProps.isBox === false && selfEditBoxProps.isEditBox === false && editButtons === true) {
         return (
             <div>
                 <Card className={'dark-green-bg'}>
@@ -42,6 +39,35 @@ const Post = (props) => {
                                         deleteFunc(post.postID)
                                     }}
                             >{'\u{1F5D1}'}</Button>
+                        </div>
+                    </div>
+                    <Card.Text className={'post-text'}>{post.body}</Card.Text>
+                    <Button variant={'link'} onClick={() => {
+                        replyBoxFunc(replyBoxProps.postID)
+                    }}
+                            className={'button-as-link px-0'}>Reply</Button>
+                </Card>
+            </div>
+        )
+    } else if (replyBoxProps.isBox === false && selfEditBoxProps.isEditBox === false && editButtons === false) {
+        return (
+            <div>
+                <Card className={'dark-green-bg'}>
+                    <div className={'container-fluid px-0'}>
+                        <div className={'row'}>
+                            <Card.Title className={'post-name col-12'}>{post.name}</Card.Title>
+                            {/*<Button variant={'link'}*/}
+                            {/*        className={'col-1 justify-content-end card-title button-no-decoration'}*/}
+                            {/*        onClick={() => {*/}
+                            {/*            editBoxFunc(selfEditBoxProps.postID)*/}
+                            {/*        }}*/}
+                            {/*>{'\u270F'}</Button>*/}
+                            {/*<Button variant={'link'}*/}
+                            {/*        className={'col-1 justify-content-end card-title button-no-decoration'}*/}
+                            {/*        onClick={() => {*/}
+                            {/*            deleteFunc(post.postID)*/}
+                            {/*        }}*/}
+                            {/*>{'\u{1F5D1}'}</Button>*/}
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{post.body}</Card.Text>

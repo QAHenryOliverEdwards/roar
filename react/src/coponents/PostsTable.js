@@ -179,7 +179,10 @@ const PostsTable = (props) => {
         }
     }, [replyBox])
 
-    const makePostElement = useCallback(() => {
+    const makePostElement = useCallback(async () => {
+
+        const auth = sessionStorage.getItem('auth-roar');
+        const userID = await getUserID(auth);
 
         const newElementArray = [];
 
@@ -239,10 +242,20 @@ const PostsTable = (props) => {
                             selfEditObj = editObj;
                         }
                     })
-                    newElementArray.push(<Reply post={match} key={currentChild.cID}
-                                                selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
-                                                setSelfEditBoxText={changeSpecificSelfReply}
-                                                submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
+                    if (currentChild.uID == userID) {
+                        newElementArray.push(<Reply post={match} key={currentChild.cID}
+                                                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                                                    setSelfEditBoxText={changeSpecificSelfReply}
+                                                    submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                    editButtons={true}/>);
+                    } else {
+                        newElementArray.push(<Reply post={match} key={currentChild.cID}
+                                                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                                                    setSelfEditBoxText={changeSpecificSelfReply}
+                                                    submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                    editButtons={false}/>);
+                    }
+
                     postsToIgnore.push(currentChild.cID);
                 }
             }
@@ -284,15 +297,27 @@ const PostsTable = (props) => {
                             selfEditObj = editObj;
                         }
                     })
-                    newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
-                                               replyBoxFunc={changeReplyBox} setReplyBoxText={changeSpecificReplyBox}
-                                               submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
-                                               editBoxFunc={changeSelfReplyBox}
-                                               setSelfEditBoxText={changeSpecificSelfReply}
-                                               submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
+                    if (userID == thisPost.userID) {
+                        newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
+                                                   replyBoxFunc={changeReplyBox}
+                                                   setReplyBoxText={changeSpecificReplyBox}
+                                                   submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
+                                                   editBoxFunc={changeSelfReplyBox}
+                                                   setSelfEditBoxText={changeSpecificSelfReply}
+                                                   submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                   editButtons={true}/>);
+                    } else {
+                        newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
+                                                   replyBoxFunc={changeReplyBox}
+                                                   setReplyBoxText={changeSpecificReplyBox}
+                                                   submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
+                                                   editBoxFunc={changeSelfReplyBox}
+                                                   setSelfEditBoxText={changeSpecificSelfReply}
+                                                   submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                   editButtons={false}/>);
+                    }
                     let initialParentID = thisPost.postID;
                     while (initialParentID <= maxLevel) {
-                        console.log(ignore);
                         ignore = ignore.concat(constructChildren(thisPost.childrenID, initialParentID));
                         initialParentID += 1;
                     }

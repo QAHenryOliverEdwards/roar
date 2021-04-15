@@ -5,10 +5,10 @@ const Reply = (props) => {
     const {
         post, selfEditBoxProps, editBoxFunc,
         setSelfEditBoxText, submitEditFunc,
-        deleteFunc
+        deleteFunc, editButtons
     } = props;
 
-    if (selfEditBoxProps.isEditBox === false) {
+    if (selfEditBoxProps.isEditBox === false && editButtons === true) {
         return (
             <div>
                 <Card className={'light-green-bg'}>
@@ -23,7 +23,7 @@ const Reply = (props) => {
                             >{'\u270F'}</Button>
                             <Button variant={'link'}
                                     className={'col-1 justify-content-end card-title button-no-decoration'}
-                                    onClick={()=>{
+                                    onClick={() => {
                                         deleteFunc(post.postID)
                                     }}>{'\u{1F5D1}'}</Button>
                         </div>
@@ -33,7 +33,22 @@ const Reply = (props) => {
                 </Card>
             </div>
         )
-    } else if (selfEditBoxProps.isEditBox === true) {
+    } else if (selfEditBoxProps.isEditBox === false && editButtons === false) {
+        return (
+            <div>
+                <Card className={'light-green-bg'}>
+                    <div className={'container-fluid px-0'}>
+                        <div className={'row'}>
+                            <Card.Title className={'post-name col-12'}>{post.name}</Card.Title>
+                        </div>
+                    </div>
+                    <Card.Text className={'post-text'}>{post.body}</Card.Text>
+                    <Card.Text className={'post-text'}>At reply level {post.level}</Card.Text>
+                </Card>
+            </div>
+        )
+    }
+    else if (selfEditBoxProps.isEditBox === true) {
         return (
             <div>
                 <Card className={'light-green-bg'}>

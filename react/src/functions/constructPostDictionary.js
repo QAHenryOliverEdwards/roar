@@ -3,6 +3,7 @@ const constructPostDictionary =(allUsers)=>{
     allUsers.forEach((user)=>{
         user.posts.forEach((post)=>{
             let postItem = {
+                'userID': user.id,
                 'postID': post.id,
                 'name': user.name,
                 'body': post.body,
@@ -11,7 +12,9 @@ const constructPostDictionary =(allUsers)=>{
             const searchChildren3 =(parent, children, recursionLevel)=>{
                 if (Array.isArray(children) && (children.length !== 0)) {
                     children.forEach((child)=>{
-                        postItem.childrenID.push({pID: parent.id, cID: child.id, level: recursionLevel});
+                        console.log(child)
+                        let childUserID = findUserIDWithPostID(child.id, allUsers)
+                        postItem.childrenID.push({pID: parent.id, cID: child.id, uID: childUserID, level: recursionLevel});
                         recursionLevel += 1;
                         return searchChildren3(child, child.children, recursionLevel);
                     })
@@ -24,6 +27,18 @@ const constructPostDictionary =(allUsers)=>{
         })
     })
     return postDictionaryList;
+}
+
+const findUserIDWithPostID =(postID, userList)=>{
+    for (let user in userList) {
+        let currentUser = userList[user]
+        for (let post in userList[user]['posts']) {
+            let currentPost = userList[user]['posts'][post]
+            if (currentPost.id === postID) {
+                return currentUser.id
+            }
+        }
+    }
 }
 
 export default constructPostDictionary;
