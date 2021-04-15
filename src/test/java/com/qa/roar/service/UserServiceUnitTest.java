@@ -87,4 +87,21 @@ public class UserServiceUnitTest {
 		
 	}
 	
+	@Test
+	void readByUsernameUserTest() {
+		
+		String username = "user2";
+		
+		UserDTO expected = this.mapToDTO(testUser2);
+		
+		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
+		
+		UserDTO result = this.service.read(username);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findByUsername(username);
+		
+	}
+	
 }
