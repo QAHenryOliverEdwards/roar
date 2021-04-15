@@ -16,8 +16,6 @@ const Homepage = (props) => {
     const [searchText, setSearchText] = useState('');
     const [postText, setPostText] = useState('');
 
-    const [reply, setReply] = useState({});
-
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
             let response = await fetch('http://127.0.0.1:8082/users/read');
@@ -74,12 +72,21 @@ const Homepage = (props) => {
     }
 
     const constructSearch = () => {
-        console.log('feature coming soon');
+        const searchedPosts = []
+        if (searchText === '') {
+            constructPage();
+        }
+        postDictionary.forEach((post)=>{
+            if (post.body.toLowerCase().includes(searchText.toLowerCase())) {
+                searchedPosts.push(post)
+            }
+        })
+        setPostDictionary(searchedPosts)
     }
 
     useEffect(() => {
         constructPage();
-    }, [constructPage, searchText, postText])
+    }, [constructPage, postText])
 
     return (
         <div className={'container-fluid mt-3 col-lg-6 col-sm-12'}>
