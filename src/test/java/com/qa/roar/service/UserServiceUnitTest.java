@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,23 @@ public class UserServiceUnitTest {
 		assertEquals(expected, result);
 		
 		verify(this.repo, atLeastOnce()).findAll();
+		
+	}
+	
+	@Test
+	void readByIdUserTest() {
+		
+		Long id = 2L;
+		
+		UserDTO expected = this.mapToDTO(testUser2);
+		
+		when(this.repo.findById(id)).thenReturn(Optional.of(testUser2));
+		
+		UserDTO result = this.service.read(id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findById(id);
 		
 	}
 	
