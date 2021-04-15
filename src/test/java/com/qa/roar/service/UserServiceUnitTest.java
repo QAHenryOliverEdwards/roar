@@ -104,4 +104,25 @@ public class UserServiceUnitTest {
 		
 	}
 	
+	@Test
+	void updateUserTest() {
+		
+		Long id = 3L;
+		
+		UserDTO expected = this.mapToDTO(testUser3);
+		
+		when(this.repo.findById(id)).thenReturn(Optional.of(testUser3));
+		
+		when(this.repo.save(testUser3)).thenReturn(testUser3);
+		
+		UserDTO result = this.service.update(testUser3, id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).findById(id);
+		
+		verify(this.repo, atLeastOnce()).save(testUser3);
+		
+	}
+	
 }
