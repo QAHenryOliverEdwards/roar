@@ -125,4 +125,38 @@ public class UserServiceUnitTest {
 		
 	}
 	
+	@Test
+	void deleteUserTest() {
+		
+		Long id = 3L;
+		
+		Boolean expected = true;
+		
+		when(this.repo.existsById(id)).thenReturn(false);
+		
+		Boolean result = this.service.delete(id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsById(id);
+		
+	}
+	
+	@Test
+	void deleteUserFailTest() {
+		
+		Long id = 999L;
+		
+		Boolean expected = false;
+		
+		when(this.repo.existsById(id)).thenReturn(true);
+		
+		Boolean result = this.service.delete(id);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsById(id);
+		
+	}
+	
 }
