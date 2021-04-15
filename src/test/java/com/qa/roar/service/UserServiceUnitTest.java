@@ -1,13 +1,19 @@
 package com.qa.roar.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.qa.roar.persistence.domain.User;
-import com.qa.roar.persistence.repository.PostRepo;
+import com.qa.roar.persistence.repository.UserRepo;
 import com.qa.roar.rest.dto.UserDTO;
 
 public class UserServiceUnitTest {
@@ -16,7 +22,7 @@ public class UserServiceUnitTest {
 	private UserService service;
 	
 	@MockBean
-	private PostRepo repo;
+	private UserRepo repo;
 	
 	@Autowired
 	private ModelMapper mapper;
@@ -30,4 +36,19 @@ public class UserServiceUnitTest {
 	
 	private final List<User> testUserList = List.of(testUser2, testUser3);
 
+	@Test
+	void createUserTest() {
+		
+		UserDTO expected = this.mapToDTO(testUser2);
+		
+		when(this.repo.save(testUser2)).thenReturn(testUser2);
+		
+		UserDTO result = this.service.create(testUser2);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).save(testUser2);
+		
+	}
+	
 }
