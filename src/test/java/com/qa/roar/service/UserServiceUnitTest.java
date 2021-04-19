@@ -209,4 +209,22 @@ public class UserServiceUnitTest {
 		
 	}
 	
+	@Test
+	void loginUserNullTest() {
+		
+		String username = "##############";
+		String password = "wrong password";
+		
+		Long expected = null;
+		
+		when(this.repo.existsByUsername(username)).thenReturn(false);
+		
+		Long result = this.service.login(username, password);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
+		
+	}
+	
 }
