@@ -1,5 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import './css/roar.css';
+import './css/bootstrap.css';
+import './css/roar.css'
 import './css/fonts.css';
 import Homepage from "./pages/Homepage";
 import {useCallback, useEffect, useState} from "react";

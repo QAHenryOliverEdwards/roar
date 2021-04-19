@@ -1,9 +1,9 @@
 import {useCallback, useEffect, useState} from "react";
-import LoginInput from "../coponents/LoginInput";
-import PasswordInput from "../coponents/PasswordInput";
-import LoginTitle from "../coponents/LoginTitle";
-import RegisterButton from "../coponents/RegisterButton";
-import LoginButton from "../coponents/LoginButton";
+import LoginInput from "../components/LoginInput";
+import PasswordInput from "../components/PasswordInput";
+import LoginTitle from "../components/LoginTitle";
+import RegisterButton from "../components/RegisterButton";
+import LoginButton from "../components/LoginButton";
 import Register from "./Register";
 
 const LoginRegister =(props)=>{
@@ -28,7 +28,7 @@ const LoginRegister =(props)=>{
     
     const loginFunc = useCallback(async()=>{
             console.log(`username: ${username}, password: ${password}`)
-            let response = await fetch('http://127.0.0.1:8082/users/login', {
+            let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/login', {
                 method: 'POST',
                 headers: {
                     'username': username,
@@ -63,11 +63,7 @@ const LoginRegister =(props)=>{
                 <Register setLoginFunc={setLoginFunc}/>
             )
         }
-    }, [loginFunc, password, register, username])
-
-    // useEffect(()=>{
-    //     constructPage()
-    // }, [constructPage])
+    }, [loginFunc, password, register, setLoginFunc, username])
 
     return (
         <div>

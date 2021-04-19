@@ -5,7 +5,7 @@ import getUserID from "../functions/getUserID";
 
 const PostsTable = (props) => {
 
-    const {postDictionary} = props;
+    const {postDictionary, reloadPosts} = props;
 
     const [elementArray, setElementArray] = useState([]);
     const [replyBox, setReplyBox] = useState([]);
@@ -73,7 +73,7 @@ const PostsTable = (props) => {
             }
         }
 
-        let response = await fetch(`http://127.0.0.1:8082/posts/update/${postID}`, {
+        let response = await fetch(`http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/update/${postID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,17 +83,27 @@ const PostsTable = (props) => {
 
         if (response.status === 202) {
             console.log('Update successful!')
+            let newEditBoxList = []
+            for (let edit in selfEdit) {
+                let currentEdit = selfEdit[edit]
+                if (currentEdit.postID == postID) {
+                    currentEdit.isEditBox = false
+                }
+                newEditBoxList.push(currentEdit)
+            }
+            reloadPosts()
         } else {
             console.log('Update failed!');
         }
     }, [selfEdit])
 
     const deletePost = useCallback(async (postID) => {
-            let response = await fetch(`http://127.0.0.1:8082/posts/delete/${postID}`, {
+            let response = await fetch(`http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/delete/${postID}`, {
                 method: 'DELETE',
             })
             if (response.status === 204) {
                 console.log('Delete successful')
+                reloadPosts()
             } else {
                 console.log('Delete unsuccessful')
             }
@@ -145,7 +155,7 @@ const PostsTable = (props) => {
     }, [replyBox])
 
     const submitReply = useCallback(async (postID) => {
-        let replyObj;
+        let replyObj = {};
         let auth = sessionStorage.getItem('auth-roar');
         let userID = await getUserID(auth);
         for (let reply in replyBox) {
@@ -164,7 +174,7 @@ const PostsTable = (props) => {
             }
         }
 
-        let response = await fetch('http://127.0.0.1:8082/posts/create', {
+        let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,6 +184,16 @@ const PostsTable = (props) => {
 
         if (response.status === 201) {
             console.log('Reply successful')
+            let newReplyBoxList = [];
+            for (let replyBoxObj in replyBox) {
+                let currentReply = replyBox[replyBoxObj];
+                if (currentReply.postID == postID) {
+                    currentReply.isBox = false
+                }
+                newReplyBoxList.push(currentReply)
+            }
+            setReplyBox(newReplyBoxList)
+            reloadPosts()
         } else {
             console.log('Reply failed')
         }
