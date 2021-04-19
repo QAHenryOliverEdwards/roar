@@ -5,7 +5,7 @@ import getUserID from "../functions/getUserID";
 
 const PostsTable = (props) => {
 
-    const {postDictionary} = props;
+    const {postDictionary, reloadPosts} = props;
 
     const [elementArray, setElementArray] = useState([]);
     const [replyBox, setReplyBox] = useState([]);
@@ -73,7 +73,7 @@ const PostsTable = (props) => {
             }
         }
 
-        let response = await fetch(`http://127.0.0.1:8082/posts/update/${postID}`, {
+        let response = await fetch(`http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/update/${postID}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,17 +83,27 @@ const PostsTable = (props) => {
 
         if (response.status === 202) {
             console.log('Update successful!')
+            let newEditBoxList = []
+            for (let edit in selfEdit) {
+                let currentEdit = selfEdit[edit]
+                if (currentEdit.postID == postID) {
+                    currentEdit.isEditBox = false
+                }
+                newEditBoxList.push(currentEdit)
+            }
+            reloadPosts()
         } else {
             console.log('Update failed!');
         }
     }, [selfEdit])
 
     const deletePost = useCallback(async (postID) => {
-            let response = await fetch(`http://127.0.0.1:8082/posts/delete/${postID}`, {
+            let response = await fetch(`http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/delete/${postID}`, {
                 method: 'DELETE',
             })
             if (response.status === 204) {
                 console.log('Delete successful')
+                reloadPosts()
             } else {
                 console.log('Delete unsuccessful')
             }
@@ -145,7 +155,7 @@ const PostsTable = (props) => {
     }, [replyBox])
 
     const submitReply = useCallback(async (postID) => {
-        let replyObj;
+        let replyObj = {};
         let auth = sessionStorage.getItem('auth-roar');
         let userID = await getUserID(auth);
         for (let reply in replyBox) {
@@ -164,7 +174,7 @@ const PostsTable = (props) => {
             }
         }
 
-        let response = await fetch('http://127.0.0.1:8082/posts/create', {
+        let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,12 +184,25 @@ const PostsTable = (props) => {
 
         if (response.status === 201) {
             console.log('Reply successful')
+            let newReplyBoxList = [];
+            for (let replyBoxObj in replyBox) {
+                let currentReply = replyBox[replyBoxObj];
+                if (currentReply.postID == postID) {
+                    currentReply.isBox = false
+                }
+                newReplyBoxList.push(currentReply)
+            }
+            setReplyBox(newReplyBoxList)
+            reloadPosts()
         } else {
             console.log('Reply failed')
         }
     }, [replyBox])
 
-    const makePostElement = useCallback(() => {
+    const makePostElement = useCallback(async () => {
+
+        const auth = sessionStorage.getItem('auth-roar');
+        const userID = await getUserID(auth);
 
         const newElementArray = [];
 
@@ -239,10 +262,32 @@ const PostsTable = (props) => {
                             selfEditObj = editObj;
                         }
                     })
-                    newElementArray.push(<Reply post={match} key={currentChild.cID}
-                                                selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
-                                                setSelfEditBoxText={changeSpecificSelfReply}
-                                                submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
+                    let replyPropObj = {};
+                    replyBox.forEach((replyProp) => {
+                        if (match.postID === replyProp.postID) {
+                            replyPropObj = replyProp;
+                        }
+                    })
+                    if (currentChild.uID == userID) {
+                        newElementArray.push(<Reply post={match} key={currentChild.cID}
+                                                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                                                    setSelfEditBoxText={changeSpecificSelfReply}
+                                                    submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                    editButtons={true} replyBoxProps={replyPropObj}
+                                                    replyBoxFunc={changeReplyBox}
+                                                    setReplyBoxText={changeSpecificReplyBox}
+                                                    submitReplyFunc={submitReply}/>);
+                    } else {
+                        newElementArray.push(<Reply post={match} key={currentChild.cID}
+                                                    selfEditBoxProps={selfEditObj} editBoxFunc={changeSelfReplyBox}
+                                                    setSelfEditBoxText={changeSpecificSelfReply}
+                                                    submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                    editButtons={false} replyBoxProps={replyPropObj}
+                                                    replyBoxFunc={changeReplyBox}
+                                                    setReplyBoxText={changeSpecificReplyBox}
+                                                    submitReplyFunc={submitReply}/>);
+                    }
+
                     postsToIgnore.push(currentChild.cID);
                 }
             }
@@ -284,15 +329,27 @@ const PostsTable = (props) => {
                             selfEditObj = editObj;
                         }
                     })
-                    newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
-                                               replyBoxFunc={changeReplyBox} setReplyBoxText={changeSpecificReplyBox}
-                                               submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
-                                               editBoxFunc={changeSelfReplyBox}
-                                               setSelfEditBoxText={changeSpecificSelfReply}
-                                               submitEditFunc={submitEdit} deleteFunc={deletePost}/>);
+                    if (userID == thisPost.userID) {
+                        newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
+                                                   replyBoxFunc={changeReplyBox}
+                                                   setReplyBoxText={changeSpecificReplyBox}
+                                                   submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
+                                                   editBoxFunc={changeSelfReplyBox}
+                                                   setSelfEditBoxText={changeSpecificSelfReply}
+                                                   submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                   editButtons={true}/>);
+                    } else {
+                        newElementArray.push(<Post post={fp} key={fp.postID} replyBoxProps={replyPropObj}
+                                                   replyBoxFunc={changeReplyBox}
+                                                   setReplyBoxText={changeSpecificReplyBox}
+                                                   submitReplyFunc={submitReply} selfEditBoxProps={selfEditObj}
+                                                   editBoxFunc={changeSelfReplyBox}
+                                                   setSelfEditBoxText={changeSpecificSelfReply}
+                                                   submitEditFunc={submitEdit} deleteFunc={deletePost}
+                                                   editButtons={false}/>);
+                    }
                     let initialParentID = thisPost.postID;
                     while (initialParentID <= maxLevel) {
-                        console.log(ignore);
                         ignore = ignore.concat(constructChildren(thisPost.childrenID, initialParentID));
                         initialParentID += 1;
                     }

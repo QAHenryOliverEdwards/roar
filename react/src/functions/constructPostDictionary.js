@@ -1,29 +1,49 @@
-const constructPostDictionary =(allUsers)=>{
+const constructPostDictionary = (allUsers) => {
     const postDictionaryList = [];
-    allUsers.forEach((user)=>{
-        user.posts.forEach((post)=>{
+    allUsers.forEach((user) => {
+        user.posts.forEach((post) => {
             let postItem = {
+                'userID': user.id,
                 'postID': post.id,
                 'name': user.name,
                 'body': post.body,
                 'childrenID': []
             }
-            const searchChildren3 =(parent, children, recursionLevel)=>{
+            const searchChildren3 = (parent, children, recursionLevel) => {
                 if (Array.isArray(children) && (children.length !== 0)) {
-                    children.forEach((child)=>{
-                        postItem.childrenID.push({pID: parent.id, cID: child.id, level: recursionLevel});
-                        recursionLevel += 1;
+                    recursionLevel += 1;
+                    children.forEach((child) => {
+                        console.log(child)
+                        let childUserID = findUserIDWithPostID(child.id, allUsers)
+                        postItem.childrenID.push({
+                            pID: parent.id,
+                            cID: child.id,
+                            uID: childUserID,
+                            level: recursionLevel
+                        });
                         return searchChildren3(child, child.children, recursionLevel);
                     })
                 } else {
                     return postItem;
                 }
             }
-            searchChildren3(post, post.children, 1);
+            searchChildren3(post, post.children, 0);
             postDictionaryList.push(postItem);
         })
     })
     return postDictionaryList;
+}
+
+const findUserIDWithPostID = (postID, userList) => {
+    for (let user in userList) {
+        let currentUser = userList[user]
+        for (let post in userList[user]['posts']) {
+            let currentPost = userList[user]['posts'][post]
+            if (currentPost.id === postID) {
+                return currentUser.id
+            }
+        }
+    }
 }
 
 export default constructPostDictionary;

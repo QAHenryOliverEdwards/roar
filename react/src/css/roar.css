@@ -14,10 +14,6 @@
     color: white;
     text-align: left;
 }
-
-.button-no-decoration {
-    text-decoration: none;
-}
 /*Special CSS for rendering a hr with text in it*/
 
 .separator {
@@ -39,4 +35,8 @@
 
 .separator:not(:empty)::after {
     margin-left: .25em;
+}
+
+.button-no-decoration {
+    text-decoration: none;
 }

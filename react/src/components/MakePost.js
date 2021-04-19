@@ -9,7 +9,8 @@ const MakePost =(props)=>{
             <h3 className={'title'}>Speak Your Mind</h3>
             <textarea className={'form-control'} rows={3} id={'post-box'}
             onChange={event => {setPostText(event)}}/>
-            <Button variant={'secondary'} onClick={()=>{submitPostFunc()}}
+            <Button variant={'secondary'} onClick={(event)=>{submitPostFunc();
+            setPostText(event)}}
             className={'form-control'}>Submit Post</Button>
         </div>
     )
