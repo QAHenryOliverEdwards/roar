@@ -1,6 +1,6 @@
 import {useCallback, useState} from "react";
-import RegisterTitle from "../coponents/RegisterTitle";
-import FormInput from "../coponents/FormInput";
+import RegisterTitle from "../components/RegisterTitle";
+import FormInput from "../components/FormInput";
 import {Button} from "react-bootstrap";
 
 const Register = (props) => {
@@ -30,7 +30,7 @@ const Register = (props) => {
 
     const loginFunc = useCallback(async () => {
         console.log(`username: ${username}, password: ${password}`)
-        let response = await fetch('http://127.0.0.1:8082/users/login', {
+        let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/login', {
             method: 'POST',
             headers: {
                 'username': username,
@@ -56,7 +56,7 @@ const Register = (props) => {
             'password': password
         }
 
-        let response = await fetch('http://127.0.0.1:8082/users/create', {
+        let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,9 +66,6 @@ const Register = (props) => {
 
         if (response.status === 201) {
             console.log('Successfully created');
-            // setLoginUsername(username);
-            // setLoginPassword(password);
-            // setRegister(false);
             await loginFunc();
         } else {
             console.log('Unsuccessful!')
