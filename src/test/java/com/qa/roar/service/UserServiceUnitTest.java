@@ -195,11 +195,15 @@ public class UserServiceUnitTest {
 		
 		Long expected = null;
 		
+		when(this.repo.existsByUsername(username)).thenReturn(true);
+		
 		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
 		
 		Long result = this.service.login(username, password);
 		
 		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
 		
 		verify(this.repo, atLeastOnce()).findByUsername(username);
 		
