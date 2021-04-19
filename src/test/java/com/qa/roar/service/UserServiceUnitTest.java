@@ -96,11 +96,15 @@ public class UserServiceUnitTest {
 		
 		UserDTO expected = this.mapToDTO(testUser2);
 		
+		when(this.repo.existsByUsername(username)).thenReturn(true);
+		
 		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
 		
 		UserDTO result = this.service.read(username);
 		
 		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
 		
 		verify(this.repo, atLeastOnce()).findByUsername(username);
 		
@@ -169,11 +173,15 @@ public class UserServiceUnitTest {
 		
 		Long expected = testUser2.getId();
 		
+		when(this.repo.existsByUsername(username)).thenReturn(true);
+		
 		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
 		
 		Long result = this.service.login(username, password);
 		
 		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
 		
 		verify(this.repo, atLeastOnce()).findByUsername(username);
 		
@@ -187,13 +195,35 @@ public class UserServiceUnitTest {
 		
 		Long expected = null;
 		
+		when(this.repo.existsByUsername(username)).thenReturn(true);
+		
 		when(this.repo.findByUsername(username)).thenReturn(Optional.of(testUser2));
 		
 		Long result = this.service.login(username, password);
 		
 		assertEquals(expected, result);
 		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
+		
 		verify(this.repo, atLeastOnce()).findByUsername(username);
+		
+	}
+	
+	@Test
+	void loginUserNullTest() {
+		
+		String username = "##############";
+		String password = "wrong password";
+		
+		Long expected = null;
+		
+		when(this.repo.existsByUsername(username)).thenReturn(false);
+		
+		Long result = this.service.login(username, password);
+		
+		assertEquals(expected, result);
+		
+		verify(this.repo, atLeastOnce()).existsByUsername(username);
 		
 	}
 	
