@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.roar.persistence.domain.User;
 import com.qa.roar.rest.dto.UserDTO;
 import com.qa.roar.service.UserService;
+import com.qa.roar.utils.AuthUtils;
 
 @RestController
 @RequestMapping("/users")
@@ -76,13 +78,36 @@ public class UserController {
 	// DELETE
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<UserDTO> update( @PathVariable Long id) {
+	public ResponseEntity<UserDTO> delete( @PathVariable Long id) {
 		return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	// LOGIN
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestHeader("username") String username,
+			@RequestHeader("password") String password) {
+		Long userId = this.service.login(username, password);
+		if (userId == null) {
+			return new ResponseEntity<>("INVALID", HttpStatus.BAD_REQUEST);
+		}
+		String loggedIn = AuthUtils.createUserToken(userId);
+		return new ResponseEntity<>(loggedIn, HttpStatus.OK);
+	}
+
+	
 	
 	// LOGOUT
+	@PostMapping("/logout")
+	public ResponseEntity<String> logout(@RequestHeader("token") String token) {
+		AuthUtils.deleteUserToken(token);
+		return new ResponseEntity<>("TOKEN HAS BEEN DELETED", HttpStatus.OK);
+	}
 
+	// GET ID FROM AUTH-KEY
+	@GetMapping("/getID")
+	public ResponseEntity<Long> getID(@RequestHeader("token") String token) {
+		Long userID = AuthUtils.getToken(token);
+		return new ResponseEntity<>(userID, HttpStatus.OK);
+	}
 }

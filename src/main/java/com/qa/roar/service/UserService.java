@@ -55,9 +55,13 @@ public class UserService {
 	
 	// READ - by username
 	public  UserDTO read(String username) {
-		return this.mapToDTO(
-				this.repo.findByUsername(username)
-				.orElseThrow());
+		if (this.repo.existsByUsername(username)) {
+			return this.mapToDTO(
+					this.repo.findByUsername(username)
+							.orElseThrow());
+		} else {
+			return null;
+		}
 	}
 	
 	// UPDATE
@@ -73,6 +77,33 @@ public class UserService {
 	public Boolean delete(Long id) {
 		this.repo.deleteById(id);
 		return !this.repo.existsById(id);
+	}
+
+	// LOGIN
+	
+//	public Long login(String username, String password) {
+//		List<UserDTO> account = this.repo.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+//		for (UserDTO thisUser: account) {
+//			if (thisUser.getUsername().equals(username) && thisUser.getPassword().equals(password)) {
+//				return thisUser.getId();
+//			}
+//		}
+//		return null;
+//	}
+	
+	public Long login(String username, String password) {
+
+		UserDTO user = read(username);
+
+		if (user == null) {
+			return null;
+		}
+		
+		if (user.getPassword().equals(password)) {
+			return user.getId();
+		}
+
+		return null;
 	}
 	
 }

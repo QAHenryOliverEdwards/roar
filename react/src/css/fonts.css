@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "Space Grotesk";
+    src: url("../fonts/SpaceGrotesk-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family:"Titillium Web";
+    src: url("../fonts/TitilliumWeb-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+.title {
+    font-family: "Space Grotesk", serif;
+    color: #EDF5E1;
+}
+
+.post-name {
+    font-family: "Titillium Web", serif;
+    color: #EDF5E1;
+}
+
+.post-text {
+    font-family: "Montserrat", serif;
+    color: #EDF5E1;
+}

@@ -1,0 +1,42 @@
+.dark-blue-bg {
+    background-color: #05386B ;
+}
+
+.light-green-bg {
+    background-color: #5CDB95;
+}
+
+.dark-green-bg {
+    background-color: #379683;
+}
+
+.button-as-link {
+    color: white;
+    text-align: left;
+}
+/*Special CSS for rendering a hr with text in it*/
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid white;
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.button-no-decoration {
+    text-decoration: none;
+}

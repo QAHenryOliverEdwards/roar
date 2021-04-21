@@ -16,10 +16,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class PostService {
+public class PostService { 
 	
 	private final PostRepo repo;
 	private final ModelMapper mapper;
+	
 	
 	// map to DTO
 	private PostDTO mapToDTO(Post post) {
