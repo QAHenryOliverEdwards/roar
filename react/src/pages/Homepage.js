@@ -1,124 +1,50 @@
 import {useCallback, useEffect, useState} from "react";
-import Title from "../components/Title";
-import Searchbar from "../components/Searchbar";
-import constructPostDictionary from "../functions/constructPostDictionary";
-import PostsTable from "../components/PostsTable";
-import LogoutButton from "../components/LogoutButton";
-import MakePost from "../components/MakePost";
-import getUserID from "../functions/getUserID";
+import constructPostDictionaryFunc from "../functions/constructPostDictionaryFunc"
+import {Button} from "react-bootstrap";
+import PostTable from "../components/homepage/PostTable";
 
-const Homepage = (props) => {
-
-    const {setLogoutFunc} = props;
+const Homepage = () => {
 
     const [allUsers, setAllUsers] = useState([]);
+    const [allPosts, setAllPosts] = useState([]);
     const [postDictionary, setPostDictionary] = useState([]);
-    const [searchText, setSearchText] = useState('');
-    const [postText, setPostText] = useState('');
 
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
-            let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/read');
-            let allUsers = await response.json();
-            setAllUsers(allUsers);
+            let response = await fetch('http://127.0.0.1:8082/users/read')
+            let allUsersResponse = await response.json()
+            setAllUsers(allUsersResponse)
         }
-    }, [allUsers]);
+    }, [allUsers.length])
 
-    const constructAllPosts = useCallback(() => {
-        let newPostDictionary = constructPostDictionary(allUsers);
-        if (newPostDictionary.length) {
-            setPostDictionary(newPostDictionary);
-        } else {
-            setPostDictionary([]);
+    const getAllPosts = useCallback(async () => {
+        if (!allPosts.length) {
+            let response = await fetch('http://127.0.0.1:8082/posts/read')
+            let allPostsResponse = await response.json()
+            setAllPosts(allPostsResponse)
         }
-    }, [allUsers]);
+    }, [allPosts.length])
 
-    const constructPage = useCallback(() => {
-        getAllUsers();
-        constructAllPosts();
-    }, [constructAllPosts, getAllUsers]);
-
-    const submitPost = useCallback(async () => {
-        let auth = sessionStorage.getItem('auth-roar');
-        let userID = await getUserID(auth);
-        let postObj = {
-            'body': postText,
-            'visibility': true,
-            'user': {
-                'id': userID
-            }
-        }
-        let postResponse = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/posts/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postObj)
-        })
-
-        if (postResponse.status === 201) {
-            let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/read');
-            let allUsers = await response.json();
-            setAllUsers(allUsers);
-            console.log('Post successful')
-            // Method for just adding the post to the page instead of doing a reload
-            // not currently working
-            // let post = await postResponse.json()
-            // let postDictionaryItem = await constructOnePost(post);
-            // let newPostDictionary = postDictionary
-            // newPostDictionary.push(postDictionaryItem)
-            // setPostDictionary(newPostDictionary);
-        } else {
-            console.log('Post unsuccessful')
-        }
-    }, [postText])
-
-    const handleInputText = (event) => {
-        setSearchText(event.target.value);
-    }
-
-    const handlePostText = (event) => {
-        if (event.type === 'click') {
-            setPostText('');
-        } else {
-            setPostText(event.target.value);
-        }
-    }
-
-    const resetAllUsers = async () => {
-        let response = await fetch('http://roar-env.eba-hb5rpyxz.eu-west-2.elasticbeanstalk.com/users/read');
-        let allUsers = await response.json();
-        setAllUsers(allUsers);
-    }
-
-    const constructSearch = () => {
-        const searchedPosts = []
-        if (searchText === '') {
-            constructPage();
-        }
-        postDictionary.forEach((post) => {
-            if (post.body.toLowerCase().includes(searchText.toLowerCase())) {
-                searchedPosts.push(post)
-            }
-        })
-        setPostDictionary(searchedPosts)
-    }
+    const constructPageAndPosts = useCallback(async () => {
+        await getAllUsers()
+        await getAllPosts()
+        await constructPostDictionaryFunc(allUsers, allPosts, setPostDictionary)
+    }, [getAllUsers, getAllPosts, allUsers, allPosts])
 
     useEffect(() => {
-        constructPage();
-    }, [constructPage])
+        constructPageAndPosts()
+    }, [constructPageAndPosts])
+    
+    const forceReload = useCallback(async ()=>{
+        setAllUsers([])
+        setAllPosts([])
+        constructPageAndPosts()
+    }, [constructPageAndPosts])
 
     return (
-        <div className={'container-fluid mt-3 col-lg-6 col-sm-12'}>
-            <div className={'row'}>
-                <Title/>
-                <LogoutButton setLogoutFunc={setLogoutFunc}/>
-                <MakePost setPostText={handlePostText} submitPostFunc={submitPost}/>
-            </div>
-            <div className={'row'}>
-                <Searchbar userInputFunc={handleInputText} searchFunc={constructSearch}/>
-                <PostsTable postDictionary={postDictionary} reloadPosts={resetAllUsers}/>
-            </div>
+        <div>
+            <h1>Homepage</h1>
+            <PostTable postDictionary={postDictionary} forceReload={forceReload}/>
         </div>
     )
 }

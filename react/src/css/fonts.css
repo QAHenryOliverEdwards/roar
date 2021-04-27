@@ -26,3 +26,14 @@
     font-family: "Montserrat", serif;
     color: #EDF5E1;
 }
+
+.user-name {
+    font-family: "Titillium Web", serif;
+    color: #EDF5E1;
+}
+
+.about-text {
+    font-family: "Titillium Web", serif;
+    color: #EDF5E1;
+    font-size: large;
+}
