@@ -4,7 +4,7 @@ import deleteFunc from "../../functions/deleteFunc";
 import EditButton from "./EditButton";
 
 const Post = (props) => {
-    const {postProps, setReplyFunc} = props;
+    const {postProps, setReplyFunc, forceReload} = props;
     if (postProps['recursion-level'] === 0) {
         return (
             <div>
@@ -13,7 +13,7 @@ const Post = (props) => {
                         <div className={'row'}>
                             <Card.Title className={'post-name col-10'}>{postProps.name}</Card.Title>
                             <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
-                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID}/>
+                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{postProps.body}</Card.Text>
@@ -28,7 +28,7 @@ const Post = (props) => {
                         <div className={'row'}>
                             <Card.Title className={'post-name col-10'}>{postProps.name}</Card.Title>
                             <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
-                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID}/>
+                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                     </div>
                     <Card.Text className={'post-text'}>{postProps.body}</Card.Text>

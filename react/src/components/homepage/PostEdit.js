@@ -22,7 +22,7 @@ const PostEdit = (props) => {
                         <div className={'row'}>
                             <Card.Title className={'post-name col-10'}>{postProps.name}</Card.Title>
                             <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
-                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID}/>
+                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                     </div>
                     <textarea className={'form-control post-text'} rows={2} onChange={(event) => {
@@ -43,7 +43,7 @@ const PostEdit = (props) => {
                         <div className={'row'}>
                             <Card.Title className={'post-name col-10'}>{postProps.name}</Card.Title>
                             <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
-                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID}/>
+                            <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                     </div>
                     <textarea className={'form-control post-text'} rows={2} onChange={(event) => {

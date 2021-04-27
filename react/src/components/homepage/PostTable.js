@@ -17,10 +17,9 @@ const PostTable = (props) => {
     const constructPosts = useCallback((newPostDictionary) => {
         const tempPosts = []
         newPostDictionary.forEach((post) => {
-            console.log(post)
             if (post.editText === false) {
                 tempPosts.push(<Post postProps={post} key={post.postID}
-                                     setReplyFunc={signalChangeReplyBox}/>)
+                                     setReplyFunc={signalChangeReplyBox} forceReload={forceReload}/>)
             } else if (post.editText === true) {
                 tempPosts.push(<PostEdit postProps={post} key={post.postID}
                                          setReplyFunc={signalChangeReplyBox} forceReload={forceReload}/>)
