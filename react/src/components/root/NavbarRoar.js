@@ -1,11 +1,12 @@
 import {Navbar, Nav} from "react-bootstrap";
-import {BrowserRouter, Link, Route} from "react-router-dom";
+import {BrowserRouter, Link, Route, Redirect} from "react-router-dom";
 import Switch from "react-bootstrap/Switch";
 import Homepage from "../../pages/Homepage";
 import About from "../../pages/About";
 import Login from "../../pages/Login";
 import {useState} from "react";
 import Register from "../../pages/Register";
+import Logout from "../../pages/Logout";
 
 const NavbarRoar = () => {
 
@@ -26,19 +27,22 @@ const NavbarRoar = () => {
                 </div>
                 <Switch>
                     <Route exact path={'/'}>
-                        <Homepage/>
+                        <Homepage loggedIn={loggedIn}/>
                     </Route>
                     <Route path={'/home'}>
-                        <Homepage/>
+                        <Homepage loggedIn={loggedIn}/>
                     </Route>
                     <Route path={'/about'}>
                         <About/>
                     </Route>
                     <Route path={'/login'}>
-                        <Login setLoginFunc={setLoggedIn}/>
+                        {loggedIn ? <Redirect to={'/home'}/> : <Login setLoginFunc={setLoggedIn}/>}
                     </Route>
                     <Route path={'/register'}>
-                        <Register setLoginFunc={setLoggedIn}/>
+                        {loggedIn ? <Redirect to={'/home'}/> : <Register setLoginFunc={setLoggedIn}/>}
+                    </Route>
+                    <Route path={'/logout'}>
+                        {loggedIn ? <Logout setLoginFunc={setLoggedIn}/> : <Redirect to={'/home'}/>}
                     </Route>
                 </Switch>
             </BrowserRouter>
@@ -49,20 +53,30 @@ const NavbarRoar = () => {
                 <div className={'container-fluid fixed-bottom'}>
                     <Navbar className={'row'}>
                         <Nav>
-                            <Nav.Item className={'col-6 text-center'}><Link to={'/home'}>Home</Link></Nav.Item>
-                            <Nav.Item className={'col-6 text-center'}><Link to={'/about'}>About</Link></Nav.Item>
+                            <Nav.Item className={'col-4 text-center'}><Link to={'/home'}>Home</Link></Nav.Item>
+                            <Nav.Item className={'col-4 text-center'}><Link to={'/about'}>About</Link></Nav.Item>
+                            <Nav.Item className={'col-4 text-center'}><Link to={'/logout'}>Logout</Link></Nav.Item>
                         </Nav>
                     </Navbar>
                 </div>
                 <Switch>
                     <Route exact path={'/'}>
-                        <Homepage/>
+                        <Homepage loggedIn={loggedIn}/>
                     </Route>
                     <Route path={'/home'}>
-                        <Homepage/>
+                        <Homepage loggedIn={loggedIn}/>
                     </Route>
                     <Route path={'/about'}>
                         <About/>
+                    </Route>
+                    <Route path={'/login'}>
+                        {loggedIn ? <Redirect to={'/home'}/> : <Login setLoginFunc={setLoggedIn}/>}
+                    </Route>
+                    <Route path={'/register'}>
+                        {loggedIn ? <Redirect to={'/home'}/> : <Register setLoginFunc={setLoggedIn}/>}
+                    </Route>
+                    <Route path={'/logout'}>
+                        {loggedIn ? <Logout setLoginFunc={setLoggedIn}/> : <Redirect to={'/home'}/>}
                     </Route>
                 </Switch>
             </BrowserRouter>
