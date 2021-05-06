@@ -1,5 +1,6 @@
 package com.qa.roar.persistence.domain;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +44,9 @@ public class Post {
 	
 	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
 	private List<Post> children;
+	
+	@JsonFormat(pattern="dd-MM-yyy HH:mm:ss")
+    private Date created;
 	
 	// constructor for creating post
 	public Post(String body, User user) {
