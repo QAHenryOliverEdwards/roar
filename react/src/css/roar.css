@@ -10,6 +10,12 @@
     background-color: #379683;
 }
 
+.button-as-link {
+    color: white;
+    text-align: left;
+}
+/*Special CSS for rendering a hr with text in it*/
+
 .separator {
     display: flex;
     align-items: center;
@@ -29,4 +35,8 @@
 
 .separator:not(:empty)::after {
     margin-left: .25em;
+}
+
+.button-no-decoration {
+    text-decoration: none;
 }

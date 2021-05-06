@@ -78,7 +78,7 @@ public class UserController {
 	// DELETE
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<UserDTO> update( @PathVariable Long id) {
+	public ResponseEntity<UserDTO> delete( @PathVariable Long id) {
 		return this.service.delete(id) ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

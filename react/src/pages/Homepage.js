@@ -1,100 +1,50 @@
 import {useCallback, useEffect, useState} from "react";
-import Title from "../coponents/Title";
-import Searchbar from "../coponents/Searchbar";
-import constructPostDictionary from "../functions/constructPostDictionary";
-import PostsTable from "../coponents/PostsTable";
-import LogoutButton from "../coponents/LogoutButton";
-import MakePost from "../coponents/MakePost";
+import constructPostDictionaryFunc from "../functions/constructPostDictionaryFunc"
+import {Button} from "react-bootstrap";
+import PostTable from "../components/homepage/PostTable";
 
-const Homepage = (props) => {
-
-    const {setLogoutFunc} = props;
+const Homepage = () => {
 
     const [allUsers, setAllUsers] = useState([]);
+    const [allPosts, setAllPosts] = useState([]);
     const [postDictionary, setPostDictionary] = useState([]);
-    const [searchText, setSearchText] = useState('');
-    const [postText, setPostText] = useState('');
 
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
-            let response = await fetch('http://127.0.0.1:8082/users/read');
-            let allUsers = await response.json();
-            setAllUsers(allUsers);
+            let response = await fetch('http://127.0.0.1:8082/users/read')
+            let allUsersResponse = await response.json()
+            setAllUsers(allUsersResponse)
         }
-    }, [allUsers.length]);
+    }, [allUsers.length])
 
-    const constructAllPosts = useCallback(() => {
-        let newPostDictionary = constructPostDictionary(allUsers);
-        if (newPostDictionary.length) {
-            setPostDictionary(newPostDictionary);
-        } else {
-            setPostDictionary([]);
+    const getAllPosts = useCallback(async () => {
+        if (!allPosts.length) {
+            let response = await fetch('http://127.0.0.1:8082/posts/read')
+            let allPostsResponse = await response.json()
+            setAllPosts(allPostsResponse)
         }
-    }, [allUsers]);
+    }, [allPosts.length])
 
-    const constructPage = useCallback(async () => {
-        await getAllUsers();
-        await constructAllPosts();
-    }, [constructAllPosts, getAllUsers]);
-
-    const submitPost = useCallback(async ()=>{
-        let auth = sessionStorage.getItem('auth-roar');
-        let response = await fetch(`http://127.0.0.1:8082/users/getID`, {
-            headers: {
-                'token': auth
-            }
-        })
-        let userID = await response.text();
-        let postObj = {
-            'body': postText,
-            'visibility': true,
-            'user': {
-                'id': userID
-            }
-        }
-        let postResponse = await fetch('http://127.0.0.1:8082/posts/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(postObj)
-        })
-
-        if (postResponse.status === 201) {
-            console.log('Post successful')
-        } else {
-            console.log('Post unsuccessful')
-        }
-    }, [postText])
-
-    const handleInputText = (event) => {
-        setSearchText(event.target.value);
-    }
-
-    const handlePostText =(event)=>{
-        setPostText(event.target.value);
-    }
-
-    const constructSearch = () => {
-        console.log('feature coming soon');
-        // constructAllPosts();
-    }
+    const constructPageAndPosts = useCallback(async () => {
+        await getAllUsers()
+        await getAllPosts()
+        await constructPostDictionaryFunc(allUsers, allPosts, setPostDictionary)
+    }, [getAllUsers, getAllPosts, allUsers, allPosts])
 
     useEffect(() => {
-        constructPage();
-    }, [constructPage, searchText, postText])
+        constructPageAndPosts()
+    }, [constructPageAndPosts])
+    
+    const forceReload = useCallback(async ()=>{
+        setAllUsers([])
+        setAllPosts([])
+        constructPageAndPosts()
+    }, [constructPageAndPosts])
 
     return (
-        <div className={'container-fluid mt-3 col-lg-6 col-sm-12'}>
-            <div className={'row'}>
-                <Title/>
-                <LogoutButton setLogoutFunc={setLogoutFunc}/>
-                <MakePost setPostText={handlePostText} submitPostFunc={submitPost}/>
-            </div>
-            <div className={'row'}>
-                <Searchbar userInputFunc={handleInputText} searchFunc={constructSearch}/>
-                <PostsTable postDictionary={postDictionary}/>
-            </div>
+        <div>
+            <h1>Homepage</h1>
+            <PostTable postDictionary={postDictionary} forceReload={forceReload}/>
         </div>
     )
 }
