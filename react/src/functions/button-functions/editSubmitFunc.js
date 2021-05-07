@@ -1,9 +1,8 @@
-import sleep from "./sleep";
+import sleep from "../sleep";
 
 const editSubmitFunc = async (postBody, postID, forceReloadFunc) => {
     let postObj = {
         'body': postBody,
-        'visibility': true
     }
 
     let response = await fetch(`http://127.0.0.1:8082/posts/update/${postID}`, {
@@ -15,7 +14,7 @@ const editSubmitFunc = async (postBody, postID, forceReloadFunc) => {
     })
 
     if (response.status === 202) {
-        await sleep(500)
+        console.log('Update succeeded')
         forceReloadFunc()
     } else {
         console.log('Update failed')

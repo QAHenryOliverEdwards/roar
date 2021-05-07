@@ -1,4 +1,4 @@
-import getUserIDFunc from "./getUserIDFunc";
+import getUserIDFunc from "../getUserIDFunc";
 
 const submitPostFunc = async (postBody, forceReloadFunc)=>{
 

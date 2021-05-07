@@ -1,9 +1,9 @@
 import {Button, Card} from "react-bootstrap";
 import DeleteButton from "./DeleteButton";
-import deleteFunc from "../../functions/deleteFunc";
+import deleteFunc from "../../functions/button-functions/deleteFunc";
 import EditButton from "./EditButton";
 import {useState} from "react";
-import editSubmitFunc from "../../functions/editSubmitFunc";
+import editSubmitFunc from "../../functions/button-functions/editSubmitFunc";
 
 const PostEdit = (props) => {
     const {postProps, setReplyFunc, forceReload} = props;

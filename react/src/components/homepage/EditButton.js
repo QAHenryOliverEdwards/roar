@@ -6,7 +6,7 @@ const EditButton =(props)=>{
         <Button variant={'link'} className={'col-1 justify-content-end card-title button-no-decoration'}
                 onClick={()=>{
                     editFunc(postID)
-                }}>{'\u270F'}</Button>
+                }} id={`edit-post-${postID}`}>{'\u270F'}</Button>
     )
 }
 

@@ -31,12 +31,12 @@ const Register = (props) => {
     return (
         <div className={'container-fluid mt-3 '}>
             <h3 className={'title text-center'}>Register</h3>
-            <GenericInput type={'text'} inputFunc={inputUsername} placeholder={'Username'}/>
-            <GenericInput type={'text'} inputFunc={inputName} placeholder={'Name'}/>
-            <GenericInput type={'text'} inputFunc={inputEmail} placeholder={'Email'}/>
-            <GenericInput type={'password'} inputFunc={inputPassword} placeholder={'Password'}/>
+            <GenericInput type={'text'} inputFunc={inputUsername} placeholder={'Username'} nameTag={'username'}/>
+            <GenericInput type={'text'} inputFunc={inputName} placeholder={'Name'} nameTag={'name'}/>
+            <GenericInput type={'text'} inputFunc={inputEmail} placeholder={'Email'} nameTag={'email'}/>
+            <GenericInput type={'password'} inputFunc={inputPassword} placeholder={'Password'} nameTag={'password'}/>
             <Button variant={'secondary'} onClick={()=>{registerFunc(username, name, email, password, setLoginFunc)}}
-                    className={'rounded-pill form-control'}>Register</Button>
+                    className={'rounded-pill form-control'} id={'register-button'}>Register</Button>
         </div>
     )
 }

@@ -1,21 +1,22 @@
 import {Card} from "react-bootstrap";
 import DeleteButton from "./DeleteButton";
 import deleteFunc from "../../functions/button-functions/deleteFunc";
-import EditButton from "./EditButton";
-import HideButton from "./HideButton";
-import hideFunc from "../../functions/button-functions/hideFunc";
+import unHideFunc from "../../functions/button-functions/unHideFunc";
+import UnHideButton from "./UnHideButton";
 
-const Post = (props) => {
-    const {postProps, setReplyFunc, forceReload} = props;
+const PostHidden = (props) => {
+    const {postProps, forceReload} = props;
     if (postProps['recursion-level'] === 0) {
         return (
             <div>
                 <Card className={'dark-green-bg'}>
                     <div className={'container-fluid px-0 mx-0'}>
                         <div className={'row'} style={{maxWidth: '100%'}}>
-                            <Card.Title className={'post-name col-9'}>{postProps.name}</Card.Title>
-                            <HideButton hideFunc={hideFunc} postID={postProps.postID} forceReload={forceReload}/>
-                            <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
+                            <Card.Title className={'post-name col-10'}>
+                                <p className={'float-start'}>{postProps.name}</p>
+                                <p className={'float-start warning-hidden-purple-text'}>{'This post is HIDDEN only you can see it!'}</p>
+                            </Card.Title>
+                            <UnHideButton unHideFunc={unHideFunc} postID={postProps.postID} forceReload={forceReload}/>
                             <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                         <div className={'row'} style={{maxWidth: '100%'}}>
@@ -31,9 +32,10 @@ const Post = (props) => {
                 <Card className={'light-green-bg'}>
                     <div className={'container-fluid px-0 mx-0'}>
                         <div className={'row'} style={{maxWidth: '100%'}}>
-                            <Card.Title className={'post-name col-9'}>{postProps.name}</Card.Title>
-                            <HideButton hideFunc={hideFunc} postID={postProps.postID}/>
-                            <EditButton editFunc={setReplyFunc} postID={postProps.postID}/>
+                            <Card.Title className={'post-name col-10'}>
+                                <p className={'float-start'}>{postProps.name}</p>
+                                <p className={'float-start warning-hidden-purple-text'}>{'This post is HIDDEN only you can see it!'}</p>
+                            </Card.Title>                            <UnHideButton unHideFunc={unHideFunc} postID={postProps.postID} forceReload={forceReload}/>
                             <DeleteButton deleteFunc={deleteFunc} postID={postProps.postID} forceReload={forceReload}/>
                         </div>
                         <div className={'row'} style={{maxWidth: '100%'}}>
@@ -46,4 +48,4 @@ const Post = (props) => {
     }
 }
 
-export default Post;
+export default PostHidden;
