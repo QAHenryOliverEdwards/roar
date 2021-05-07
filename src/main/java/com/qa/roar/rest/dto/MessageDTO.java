@@ -1,5 +1,7 @@
 package com.qa.roar.rest.dto;
 
+import com.qa.roar.persistence.domain.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,6 @@ public class MessageDTO {
 
 	private Long id;
 	private String body;
-	private enum status{SENT,DELIVERED,OPENED};
+	private Status status;
 	
 }

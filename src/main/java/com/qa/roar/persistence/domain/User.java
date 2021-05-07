@@ -47,6 +47,12 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Post> posts;
 	
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+	private List<Message> sentMessages;
+	
+	@OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+	private List<Message> receivedMessages;
+	
 	// account creation constructor
 	public User(String username, String email, String password) {
 		this.username = username;
