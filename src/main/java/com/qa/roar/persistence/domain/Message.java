@@ -20,13 +20,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Message {
-
+	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotNull
-	@Size(max=140)
+	@Size(max = 280)
 	private String body;
 	
 	@Enumerated(EnumType.STRING)
