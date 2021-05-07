@@ -29,8 +29,8 @@ public class Message {
 	@Size(max = 280)
 	private String body;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "default SENT")
+	@Enumerated(value=EnumType.STRING)
+	@Column(columnDefinition = "default 'SENT'")
 	private Status status;
 	
 	@ManyToOne
