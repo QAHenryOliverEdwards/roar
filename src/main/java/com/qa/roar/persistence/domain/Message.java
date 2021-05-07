@@ -30,7 +30,7 @@ public class Message {
 	private String body;
 	
 	@Enumerated(value=EnumType.STRING)
-	@Column(columnDefinition = "default 'SENT'")
+//	@Column(columnDefinition = "default 'SENT'")
 	private Status status;
 	
 	@ManyToOne
