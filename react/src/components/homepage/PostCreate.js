@@ -1,6 +1,6 @@
 import {Button} from "react-bootstrap";
 import {useState} from "react";
-import submitPostFunc from "../../functions/submitPostFunc";
+import submitPostFunc from "../../functions/button-functions/submitPostFunc";
 
 const PostCreate = (props) => {
 
@@ -20,14 +20,14 @@ const PostCreate = (props) => {
 
     return (
         <div>
-            <h2 className={'title'}>Speak Your Mind</h2>
+            <h2 className={'title text-center'}>Speak Your Mind</h2>
             <textarea className={'form-control'} rows={3} id={'post-box'} onChange={(event) => {
                 userSetPostCreateText(event)
             }
             }/>
             <Button variant={'secondary'} className={'form-control'} onClick={() => {
                 submitPostFunc(postCreateText, forceReload); resetPostCreationBox()
-            }}>Submit</Button>
+            }} id={'post-submit-button'}>Submit</Button>
         </div>
     )
 }

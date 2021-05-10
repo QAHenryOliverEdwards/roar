@@ -1,10 +1,11 @@
-import addEditProp from "./post-functionality/addEditProp";
+import addEditProp from "../post-functionality/addEditProp";
 
-const constructPostDictionaryFunc = (users, posts, setPostDictionary) => {
+const constructPostDictionaryFunc = async (users, posts, userID, setPostDictionary) => {
     let temp = initialSetup(posts)
     temp = removeDuplicates(temp)
     temp = addUserInfo(temp, users)
     temp = addEditProp(temp)
+    temp = await addUserOwnsPost(temp, userID)
     setPostDictionary(temp)
 }
 
@@ -17,7 +18,8 @@ const initialSetup = (posts) => {
             'parentID': 'none',
             'name': 'none',
             'body': post.body,
-            'recursion-level': 0
+            'recursion-level': 0,
+            'visibility': post.visibility
         }
         initialList.push(postItem)
         const searchChildren = (parent, children, recursionLevel) => {
@@ -30,7 +32,8 @@ const initialSetup = (posts) => {
                         'parentID': parent.id,
                         'name': 'none',
                         'body': child.body,
-                        'recursion-level': recursionLevel
+                        'recursion-level': recursionLevel,
+                        'visibility': child.visibility
                     }
                     initialList.push(childItem)
                     return searchChildren(child, child.children, recursionLevel)
@@ -60,6 +63,30 @@ const addUserInfo = (postList, users) => {
             let user = lookupPost(post, users)
             array[index]['userID'] = user.id
             array[index]['name'] = user.name
+        })
+    }
+    return postList
+}
+
+const addUserOwnsPost = async (postList, userID) => {
+    if (userID) {
+        let response = await fetch(`http://127.0.0.1:8082/users/read/${userID}`)
+        let user = await response.json()
+        user.posts.forEach((userPost) => {
+            postList.forEach((post, index, array) => {
+                if (userPost.id === post.postID) {
+                    array[index]['ownsPost'] = true
+                }
+            })
+        })
+        postList.forEach((post, index, array) => {
+            if (post.ownsPost !== true) {
+                array[index]['ownsPost'] = false
+            }
+        })
+    } else {
+        postList.forEach((post, index, array) => {
+            array[index]['ownsPost'] = false
         })
     }
     return postList

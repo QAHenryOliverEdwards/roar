@@ -21,10 +21,10 @@ const Login =(props)=>{
     return (
         <div className={'container-fluid mt-3 '}>
             <h3 className={'title text-center'}>Login</h3>
-            <GenericInput type={'text'} inputFunc={inputUsername} placeholder={'Username'}/>
-            <GenericInput type={'password'} inputFunc={inputPassword} placeholder={'Password'}/>
+            <GenericInput type={'text'} inputFunc={inputUsername} placeholder={'Username'} nameTag={'username'}/>
+            <GenericInput type={'password'} inputFunc={inputPassword} placeholder={'Password'} nameTag={'password'}/>
             <Button variant={'secondary'} onClick={()=>{loginFunc(username, password, setLoginFunc)}}
-                    className={'rounded-pill form-control'}>Login</Button>
+                    className={'rounded-pill form-control'} id={'login-button'}>Login</Button>
         </div>
     )
 }

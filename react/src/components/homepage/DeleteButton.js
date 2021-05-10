@@ -6,7 +6,7 @@ const DeleteButton = (props) => {
         <Button variant={'link'} className={'col-1 justify-content-end card-title button-no-decoration'}
                 onClick={() => {
                     deleteFunc(postID, forceReload)
-                }}>{'\u{1F5D1}'}</Button>
+                }} id={`delete-post-${postID}`}>{'\u{1F5D1}'}</Button>
     )
 }
 

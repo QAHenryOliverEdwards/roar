@@ -1,6 +1,6 @@
-import getUserIDFunc from "./getUserIDFunc";
+import getUserIDFunc from "../getUserIDFunc";
 
-const submitPostFunc = async (postBody, forceReloadFunc, resetTextFunc)=>{
+const submitPostFunc = async (postBody, forceReloadFunc)=>{
 
     let auth = sessionStorage.getItem('auth-roar')
     let userID = await getUserIDFunc(auth)

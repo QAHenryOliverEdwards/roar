@@ -37,3 +37,14 @@
     color: #EDF5E1;
     font-size: large;
 }
+
+.navbar-text {
+    font-family: "Titillium Web", serif;
+    font-size: larger;
+}
+
+.warning-hidden-purple-text {
+    font-family: "Titillium Web", serif;
+    color: #5e0294;
+    margin-left: 5vw;
+}
