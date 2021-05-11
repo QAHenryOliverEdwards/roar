@@ -40,3 +40,9 @@
 .button-no-decoration {
     text-decoration: none;
 }
+
+.button-as-link-in-line {
+    color: white;
+    text-align: left;
+    display: inline-block;
+}

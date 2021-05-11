@@ -48,3 +48,12 @@
     color: #5e0294;
     margin-left: 5vw;
 }
+
+.shrink-to-fit {
+    display: inline-block;
+}
+
+.logout-text {
+    font-family: "Space Grotesk", serif;
+    color: #EDF5E1;
+}
