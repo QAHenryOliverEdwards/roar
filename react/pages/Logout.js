@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useState} from "react";
 import {Button, Spinner} from "react-bootstrap";
 import logoutFunc from "../functions/logoutFunc";
 import redirectFuncAndTimeout from "../functions/redirectFuncAndTimeout";
@@ -12,7 +12,7 @@ const Logout = (props) => {
     const [loggedOut, setLoggedOut] = useState(null)
     const [redirect, setRedirect] = useState(false)
 
-    const redirectTimer = useTimer(7500, 100)
+    const redirectTimer = useTimer(6000, 100)
 
     if (loggedOut === null) {
         return (
