@@ -1,7 +1,7 @@
 const logoutFunc = async (setLoggedOut)=>{
 
     let auth = sessionStorage.getItem('auth-roar')
-    let response = await fetch('http://127.0.0.1:8082/users/logout', {
+    let response = await fetch('http://192.168.1.101:8082/users/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'Application/json',

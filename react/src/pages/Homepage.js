@@ -30,7 +30,7 @@ const Homepage = (props) => {
     // Initial setup functions
     const getAllUsers = useCallback(async () => {
         if (!allUsers.length) {
-            let response = await fetch('http://127.0.0.1:8082/users/read')
+            let response = await fetch('http://192.168.1.101:8082/users/read')
             let allUsersResponse = await response.json()
             setAllUsers(allUsersResponse)
         }
@@ -38,7 +38,7 @@ const Homepage = (props) => {
 
     const getAllPosts = useCallback(async () => {
         if (!allPosts.length) {
-            let response = await fetch('http://127.0.0.1:8082/posts/read')
+            let response = await fetch('http://192.168.1.101:8082/posts/read')
             let allPostsResponse = await response.json()
             setAllPosts(allPostsResponse)
         }
@@ -59,13 +59,13 @@ const Homepage = (props) => {
 
         let updateAllUsers = []
         while (!updateAllUsers.length) {
-            let response = await fetch('http://127.0.0.1:8082/users/read')
+            let response = await fetch('http://192.168.1.101:8082/users/read')
             updateAllUsers = await response.json()
         }
 
         let updateAllPosts = []
         while (!updateAllPosts.length) {
-            let response = await fetch('http://127.0.0.1:8082/posts/read')
+            let response = await fetch('http://192.168.1.101:8082/posts/read')
             updateAllPosts = await response.json()
         }
 

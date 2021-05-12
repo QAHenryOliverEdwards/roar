@@ -5,7 +5,7 @@ const editSubmitFunc = async (postBody, postID, forceReloadFunc) => {
         'body': postBody,
     }
 
-    let response = await fetch(`http://127.0.0.1:8082/posts/update/${postID}`, {
+    let response = await fetch(`http://192.168.1.101:8082/posts/update/${postID}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'Application/json'

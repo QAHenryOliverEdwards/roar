@@ -1,6 +1,6 @@
 const deleteFunc = async (postID, forceReloadFunc) => {
     console.log(postID)
-    let response = await fetch(`http://127.0.0.1:8082/posts/delete/${postID}`, {
+    let response = await fetch(`http://192.168.1.101:8082/posts/delete/${postID}`, {
         method: 'DELETE'
     })
 

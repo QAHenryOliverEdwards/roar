@@ -9,7 +9,7 @@ const registerFunc = async (username, name, email, password, setLoginFunc)=>{
         'password': password
     }
 
-    let response = await fetch('http://127.0.0.1:8082/users/create', {
+    let response = await fetch('http://192.168.1.101:8082/users/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
