@@ -1,5 +1,6 @@
 Feature: Roar web application tests
 
+@ignore
 Scenario Outline: As a user, I want to create an account so I can save my credentials in the system.
 Given that I go to the home page1
 When I navigate to the register page
@@ -11,7 +12,7 @@ Examples:
 |Test User 1| test1@email.com|testUsername1|testPass1|
 |Test User 2| test2@email.com|testUsername2|testPass2|
 
-
+@ignore
 Scenario Outline: As a user, I want to login so that I can access my account.
 Given that I go to the home page2
 When I navigate to the login page
@@ -22,4 +23,11 @@ Examples:
 |username|password|
 |testUsername1|testPass1|
 |testUsername2|testPass2|
+
+Scenario: As a user, I want to logout after using the site
+Given that I am logged in
+When I click the logout button
+Then I am redirected to the home page and nav bar shows Login/Register
+
+
 

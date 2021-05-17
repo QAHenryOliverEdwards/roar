@@ -1,7 +1,5 @@
 package com.qa.roar.cuke.pom;
 
-import static org.junit.Assert.assertTrue;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -11,16 +9,16 @@ import lombok.Data;
 public class RegisterPage {
 	public final static String URL="http://localhost:8082";
 	
-	@FindBy(xpath="//input[@placeholder='Username']")
+	@FindBy(id="username-input")
 	private WebElement usernameRegister;
-	@FindBy(xpath="//input[@placeholder='Password']")
+	@FindBy(id="password-input")
 	private WebElement passwordRegister;
-	@FindBy(xpath="//input[@placeholder='Email']")
+	@FindBy(id="email-input")
 	private WebElement emailRegister;
-	@FindBy(xpath="//input[@placeholder='Name']")
+	@FindBy(id="name-input")
 	private WebElement nameRegister;
 	
-	@FindBy(xpath="//button[text()='Register']")
+	@FindBy(id="register-button")
 	private WebElement registerBtn;
 	
 	

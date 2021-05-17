@@ -1,7 +1,5 @@
 package com.qa.roar.cuke.pom;
 
-import static org.junit.Assert.assertTrue;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -11,13 +9,13 @@ import lombok.Data;
 public class LoginPage {
 	public final static String URL="http://localhost:8082";
 	
-	@FindBy(xpath="//input[@placeholder='Username']")
+	@FindBy(id="username-input")
 	private WebElement usernameLogin;
 	
-	@FindBy(xpath="//input[@placeholder='Password']")
+	@FindBy(id="password-input")
 	private WebElement passwordLogin;
 	
-	@FindBy(xpath="//button[text()='Login']")
+	@FindBy(id="login-button")
 	private WebElement loginBtn;
 	
 	
